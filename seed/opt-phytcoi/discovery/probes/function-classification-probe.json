@@ -1,0 +1,16 @@
+{
+  "probe_id": "function_classification_probe",
+  "status": "READY",
+  "mode": "observe_only",
+  "purpose": "classify habitat objects by observed function rather than local name",
+  "allowed_inputs": [
+    "evidence",
+    "dna",
+    "observer_outputs"
+  ],
+  "forbidden_patterns": [
+    "if hostname == specific_name",
+    "if product_name == truth",
+    "if vendor == primary_classification"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "organ_id": "discovery",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "discover habitat functions and propose germ structures from evidence",
+  "inputs": [
+    "evidence",
+    "hypothesis",
+    "dna",
+    "observer"
+  ],
+  "outputs": [
+    "function_candidates",
+    "classification_candidates",
+    "germ_proposals"
+  ],
+  "allowed_actions": [
+    "observe",
+    "classify_by_function",
+    "propose_germ"
+  ],
+  "forbidden_actions": [
+    "execute",
+    "modify_habitat",
+    "restart_services",
+    "change_configuration",
+    "hardcode_product_identity"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "organ_id": "observatory",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "provide a read-only human visual interface into PHYT-001 state",
+  "allowed_actions": [
+    "read_state",
+    "read_memory",
+    "read_dna",
+    "render_dashboard"
+  ],
+  "forbidden_actions": [
+    "modify_habitat",
+    "execute",
+    "decide",
+    "authorize",
+    "change_runtime_state"
+  ]
+}

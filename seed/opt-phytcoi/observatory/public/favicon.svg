@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="48" fill="#07130d"/>
+  <circle cx="256" cy="270" r="145" fill="none" stroke="#1f6f4a" stroke-width="3"/>
+  <path d="M256 350 C230 300 220 240 256 190 C292 240 282 300 256 350Z" fill="#39d98a"/>
+  <path d="M256 190 C220 160 190 130 170 90" fill="none" stroke="#39d98a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M256 190 C292 160 322 130 342 90" fill="none" stroke="#39d98a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M210 330 C230 290 282 290 302 330" fill="none" stroke="#55f0c2" stroke-width="6"/>
+  <path d="M205 360 C240 330 272 330 307 360" fill="none" stroke="#55f0c2" stroke-width="6"/>
+  <circle cx="170" cy="90" r="12" fill="#55f0c2"/>
+  <circle cx="342" cy="90" r="12" fill="#55f0c2"/>
+  <text x="256" y="420" text-anchor="middle" font-family="Arial" font-size="34" fill="#e8fff4">PHYT-001</text>
+  <text x="256" y="452" text-anchor="middle" font-family="Arial" font-size="18" fill="#9be7c0">OBSERVE · O:5 D:5 M:4</text>
+</svg>

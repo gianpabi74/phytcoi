@@ -1,0 +1,10 @@
+{
+  "probe_id": "germ_name_resolution_probe",
+  "status": "READY",
+  "target_function": "name_resolution",
+  "mode": "observe_only",
+  "actions": [
+    "resolve_test",
+    "port_53_check"
+  ]
+}

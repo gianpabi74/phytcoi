@@ -1,0 +1,11 @@
+[Unit]
+Description=Run PHYTCOI observe-only metabolism chain periodically
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=30min
+Persistent=true
+Unit=phytcoi-observe-chain.service
+
+[Install]
+WantedBy=timers.target

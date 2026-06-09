@@ -1,0 +1,8 @@
+[Unit]
+Description=Render PHYTCOI Observatory page
+
+[Service]
+Type=oneshot
+ExecStart=/opt/phytcoi/observatory/bin/render-observatory-v1.py
+User=root
+Group=root

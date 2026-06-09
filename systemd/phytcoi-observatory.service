@@ -1,0 +1,16 @@
+[Unit]
+Description=PHYTCOI Observatory read-only web interface
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/phytcoi/observatory/public
+ExecStart=/usr/bin/python3 -m http.server 8088 --bind 0.0.0.0
+Restart=always
+RestartSec=3
+User=aiadmin
+Group=aiadmin
+
+[Install]
+WantedBy=multi-user.target

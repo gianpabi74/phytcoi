@@ -1,0 +1,10 @@
+{
+  "probe_id": "germ_network_gateway_probe",
+  "status": "READY",
+  "target_function": "network_gateway",
+  "mode": "observe_only",
+  "actions": [
+    "ping",
+    "route_check"
+  ]
+}

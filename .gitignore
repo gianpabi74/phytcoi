@@ -1,1 +1,16 @@
 .DS_Store
+runtime-snapshot/
+runtime/
+evidence/
+hypothesis/
+logs/
+**/journal/
+**/runs/
+**/records/
+**/candidates/
+**/classifications/
+state/keys/
+*.tar.gz
+*.log
+__pycache__/
+*.pyc

@@ -1,0 +1,21 @@
+{
+  "organ": "discovery",
+  "species": "PHYTCOI",
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "birth_timestamp": "2026-06-09T17:06:05+02:00",
+  "last_run": "2026-06-09T19:30:55.983444+02:00",
+  "run_count": 7,
+  "function_candidates_count": 21,
+  "classification_candidates_count": 3,
+  "germ_proposals_count": 0,
+  "principles": [
+    "function_first",
+    "evidence_first",
+    "no_local_logic",
+    "no_vendor_truth",
+    "observe_only"
+  ],
+  "last_classification_run": "2026-06-09T18:59:39.954490+02:00",
+  "last_classification_output": "classification-candidates-20260609-185939.json"
+}

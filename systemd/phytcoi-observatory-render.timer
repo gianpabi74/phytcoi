@@ -1,0 +1,11 @@
+[Unit]
+Description=Render PHYTCOI Observatory periodically
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=phytcoi-observatory-render.service
+
+[Install]
+WantedBy=timers.target

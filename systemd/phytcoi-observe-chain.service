@@ -1,0 +1,10 @@
+[Unit]
+Description=PHYTCOI observe-only metabolism chain
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/phytcoi/bin/phytcoi-observe-chain-v1.sh
+User=root
+Group=root

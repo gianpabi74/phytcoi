@@ -1,0 +1,21 @@
+{
+  "organ_id": "observer",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "observe reality and produce evidence",
+  "inputs": [
+    "habitat",
+    "self",
+    "germ_probes"
+  ],
+  "outputs": [
+    "evidence",
+    "hypothesis"
+  ],
+  "managed_germs": [
+    "germ_network_gateway_driver",
+    "germ_name_resolution_driver"
+  ]
+}

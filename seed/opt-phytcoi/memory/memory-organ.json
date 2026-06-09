@@ -1,0 +1,20 @@
+{
+  "organ_id": "memory",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "preserve organism continuity by recording state, evidence, hypotheses, DNA, world model and organ activity",
+  "allowed_actions": [
+    "read_state",
+    "read_journal",
+    "summarize",
+    "persist_memory_record"
+  ],
+  "forbidden_actions": [
+    "modify_habitat",
+    "execute",
+    "decide",
+    "authorize"
+  ]
+}
