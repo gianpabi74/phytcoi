@@ -1,114 +1,274 @@
-PHYTCOI Species Evolution Model v1
-Purpose
+# PHYTCOI Species Architecture v1
 
-The Species Evolution Model defines how PHYTCOI evolves across generations.
+## Purpose
 
-The purpose of Species Evolution is to improve the species while preserving its identity, safety, continuity and coherence.
+This document serves as the authoritative architectural atlas of the PHYTCOI species.
 
-Evolution exists to improve the Genome.
+Its purpose is to provide a complete high-level view of the species, its structure, its cognition, its governance, its growth mechanisms and its reproductive model.
 
-Evolution does not exist to satisfy individual preferences.
+This document does not replace the detailed specifications.
 
-Evolution must benefit future generations.
+It connects them.
 
-Fundamental Principle
+---
 
-Individual growth and species evolution are different processes.
+# What is PHYTCOI?
 
-Cambium improves an individual.
+PHYTCOI is not an organism.
 
-Species Evolution improves the Genome.
+PHYTCOI is a species.
 
-The two systems must remain separate.
+A species capable of producing multiple individuals.
 
-Core Question
-
-The Species Evolution Model answers:
-
-How does the species improve itself without losing itself?
-
-Definition
-
-Species Evolution is the controlled modification of species-level structures.
+Each individual belongs to the PHYTCOI species but develops its own identity, knowledge, experience and adaptations.
 
 Examples:
 
-Genome
-Constitution
-Mission
-Lifecycle Rules
-Species Laws
-Species Architecture
+PHYT-001
 
-Evolution affects future generations.
+PHYT-002
 
-Evolution does not directly alter existing individuals.
+PHYT-003
 
-Evolution Ownership
+Each individual shares the same Genome.
 
-Owner:
+Each individual develops different DNA, World Models and Experiences.
 
-Species Evolution Council
+---
 
-Primary Inputs:
+# Species Mission
 
-Experience Cortex
-World Models
-Adaptation Registries
-Security Systems
-Governance Systems
+The purpose of the PHYTCOI species is to create cognitive infrastructure individuals capable of:
 
-Consumers:
+* observing reality
+* understanding reality
+* learning from reality
+* adapting to reality
+* governing reality
+* preserving reality
 
-Genome
-Future Seeds
-Future Generations
-Evolution Principle
+while remaining aligned with species law and habitat safety.
 
-Species evolution must be:
+---
 
-deliberate
-traceable
-reversible
-explainable
-evidence-based
+# Architectural Principles
 
-Uncontrolled mutation is prohibited.
+The species is built upon several immutable principles.
 
-Evolution Sources
+---
 
-Evolution proposals may originate from:
+## Species First
 
-recurring experience
-repeated adaptation success
-repeated adaptation failure
-governance limitations
-architectural limitations
-human guidance
+The species must preserve its identity.
 
-All proposals must reference evidence.
+No adaptation may redefine the species.
 
-Evolution Lifecycle
+No individual may rewrite species law.
 
-Species evolution follows a strict process.
+---
+
+## Habitat First
+
+The habitat enables survival.
+
+If the habitat dies, the individual dies.
+
+Habitat continuity always has priority.
+
+---
+
+## Evidence First
+
+Knowledge must emerge from evidence.
+
+Assumptions are never authoritative.
+
+Validation is mandatory.
+
+---
+
+## Growth Through Understanding
+
+Growth must emerge from understanding.
+
+Growth must never emerge from speculation.
+
+---
+
+## Safe Autonomy
+
+Autonomy is desirable.
+
+Unsafe autonomy is prohibited.
+
+Security and governance constrain action.
+
+---
+
+# Species Architecture
+
+The species is composed of multiple architectural layers.
+
+---
+
+# Layer 1 — Foundation
+
+Defines what the species is.
+
+Documents:
+
+* Constitution
+* Mission
+* Species Definition
+* Species Glossary
+* Genome
+* Lifecycle
+
+Responsibilities:
+
+* species identity
+* species law
+* species mission
+* lifecycle governance
+
+---
+
+# Layer 2 — Anatomy
+
+Defines how the species is constructed.
+
+Documents:
+
+* Anatomy
+* Organ Topology
+* Kernel Blueprint
+
+Responsibilities:
+
+* organ structure
+* organ responsibilities
+* system topology
+* kernel architecture
+
+---
+
+# Layer 3 — Cognition
+
+Defines how the species thinks.
+
+Documents:
+
+* Intelligence Model
+* Self Model
+* Evidence Model
+* Hypothesis Model
+* DNA Model
+* World Model
+* Experience Model
+* Decision Model
+* Learning Model
+* Risk Model
+
+Responsibilities:
+
+* observation
+* validation
+* reasoning
+* learning
+* decision making
+* risk evaluation
+
+---
+
+# Layer 4 — Growth
+
+Defines how the species adapts.
+
+Documents:
+
+* Adaptation Model
+* Cambium Model
+
+Responsibilities:
+
+* adaptation generation
+* capability growth
+* habitat specialization
+* blueprint generation
+
+---
+
+# Layer 5 — Governance
+
+Defines how the species operates safely.
+
+Documents:
+
+* Habitat Governance Model
+* Security Model
+
+Responsibilities:
+
+* trust management
+* approval systems
+* security enforcement
+* policy enforcement
+* habitat protection
+
+---
+
+# Layer 6 — Reproduction
+
+Defines how the species survives generations.
+
+Documents:
+
+* Seed Contract
+* Germination Model
+* Species Evolution Model
+
+Responsibilities:
+
+* seed generation
+* seed portability
+* species evolution
+* generational continuity
+
+---
+
+# Layer 7 — Communication
+
+Defines how organs coordinate.
+
+Documents:
+
+* Organ Communication Model
+
+Responsibilities:
+
+* event exchange
+* requests
+* responses
+* broadcasts
+* coordination
+
+Communication transforms organs into a coherent individual.
+
+---
+
+# Cognitive Architecture
+
+The cognitive architecture follows a strict maturity chain.
+
+Unknown
+
+↓
 
 Observation
 
 ↓
 
-Experience
-
-↓
-
-Evolution Opportunity
-
-↓
-
-Evolution Proposal
-
-↓
-
-Review
+Hypothesis
 
 ↓
 
@@ -116,268 +276,316 @@ Validation
 
 ↓
 
-Approval
+DNA
 
 ↓
 
-Genome Update
+World Model
 
 ↓
 
-Future Generation Adoption
+Experience
 
-No stage may be skipped.
+↓
 
-Evolution Domains
+Decision
 
-The species recognizes multiple evolution domains.
+↓
 
-Cognitive Evolution
+Action
+
+↓
+
+Learning
+
+This chain defines cognition.
+
+---
+
+# Knowledge Architecture
+
+The species separates different forms of knowledge.
+
+---
+
+## Genome
+
+Answers:
+
+What is the species?
+
+Contains:
+
+Species Truth.
+
+---
+
+## Self Model
+
+Answers:
+
+Who am I?
+
+Contains:
+
+Individual Truth.
+
+---
+
+## Hypothesis Model
+
+Answers:
+
+What may be true?
+
+Contains:
+
+Unvalidated Knowledge.
+
+---
+
+## DNA
+
+Answers:
+
+What exists?
+
+Contains:
+
+Validated Habitat Truth.
+
+---
+
+## World Model
+
+Answers:
+
+How does reality behave?
+
+Contains:
+
+Habitat Understanding.
+
+---
+
+## Experience
+
+Answers:
+
+What have I learned?
+
+Contains:
+
+Operational Wisdom.
+
+---
+
+# Growth Architecture
+
+Growth follows a biological pathway.
+
+DNA
+
+↓
+
+World Model
+
+↓
+
+Experience
+
+↓
+
+Cambium
+
+↓
+
+Adaptation
+
+↓
+
+Capability Expansion
+
+Growth is evidence-driven.
+
+---
+
+# Governance Architecture
+
+Governance balances autonomy and safety.
+
+Inputs:
+
+* DNA
+* World Model
+* Experience
+* Risk
+
+Outputs:
+
+* approvals
+* denials
+* policies
+* trust decisions
+
+Governance protects the habitat.
+
+---
+
+# Security Architecture
+
+Security protects:
+
+* species identity
+* Genome
+* Constitution
+* DNA integrity
+* adaptation integrity
+* habitat continuity
+
+Security constrains autonomy.
+
+Security enables safe autonomy.
+
+---
+
+# Species Evolution
+
+Species evolution and individual growth are separate.
+
+Individual Growth:
+
+Cambium
+
+↓
+
+Adaptations
+
+Species Evolution:
+
+Experience
+
+↓
+
+Evolution Proposal
+
+↓
+
+Genome Improvement
+
+Growth affects individuals.
+
+Evolution affects future generations.
+
+---
+
+# Individual Architecture
+
+An individual consists of:
+
+* Genome
+* Self Model
+* DNA
+* World Model
+* Experience
+* Adaptations
+* Governance Systems
+* Security Systems
+
+Each individual develops uniquely.
+
+---
+
+# Habitat Architecture
+
+Individuals live inside habitats.
 
 Examples:
 
-new reasoning models
-new validation mechanisms
-improved learning processes
-Governance Evolution
+* Hypervisors
+* Cloud Platforms
+* Physical Infrastructure
+* Future Unknown Environments
 
-Examples:
+The species remains universal.
 
-improved trust systems
-improved approval systems
-improved policy systems
-Adaptation Evolution
+Adaptations provide specialization.
 
-Examples:
+---
 
-improved growth mechanisms
-improved adaptation workflows
-improved blueprint generation
-Survival Evolution
+# Reproduction Architecture
 
-Examples:
+The species reproduces through Seeds.
 
-improved recovery mechanisms
-improved resilience models
-improved continuity models
-Reproduction Evolution
+A Seed contains:
 
-Examples:
+* Genome
+* Constitution
+* Species Laws
+* Germination Mechanisms
 
-improved seed architecture
-improved germination processes
-improved portability mechanisms
-Evolution Constraints
+A Seed does not contain habitat-specific DNA.
 
-Species evolution must never violate:
+DNA is learned after germination.
 
-Constitution
-Mission
-Species Identity
-Habitat Safety
-Security Boundaries
+---
 
-Evolution exists within species law.
+# Long-Term Vision
 
-Genome Protection
+The long-term objective of the species is to create cognitive infrastructure individuals capable of:
 
-The Genome is protected.
+* autonomous observation
+* autonomous understanding
+* autonomous adaptation
+* autonomous governance
+* autonomous continuity management
 
-Genome modification requires:
+while remaining aligned with species law and habitat safety.
 
-evidence
-review
-traceability
-rollback capability
-approval
+---
 
-The Genome may not be modified by individuals.
+# PHYTCOI and Individuals
 
-The Genome may not be modified by Cambium.
+PHYTCOI is the species.
 
-The Genome may not be modified by Adaptations.
+PHYT-001 is an individual.
 
-Constitution Protection
+PHYT-002 is an individual.
 
-The Constitution is the highest authority.
+Future individuals may inhabit different habitats while remaining members of the same species.
 
-Constitution changes require extraordinary review.
+---
 
-Constitution modifications are species-level events.
+# Completion Statement
 
-They are expected to be rare.
+The documents contained within the PHYTCOI species repository define:
 
-Species Identity Principle
+* species identity
+* species cognition
+* species growth
+* species governance
+* species reproduction
 
-Evolution must preserve species identity.
+Together they form the canonical specification of the PHYTCOI species.
 
-Examples:
+Any future implementation should be considered a realization of this architecture.
 
-Allowed:
+The architecture is authoritative.
 
-improved learning
-improved governance
-improved recovery
+The implementation is replaceable.
 
-Forbidden:
+---
 
-removal of species mission
-removal of species law
-destruction of species continuity
+# Final Rule
 
-Evolution must improve identity.
+Code may change.
 
-Not erase identity.
+Platforms may change.
 
-Evolution Confidence
+Habitats may change.
 
-Every proposal must include confidence.
+Individuals may change.
 
-Confidence is derived from:
+The species survives because its architecture survives.
 
-experience volume
-evidence quality
-validation quality
-operational impact
-
-Confidence alone is insufficient.
-
-Validation remains mandatory.
-
-Evolution Review
-
-Every proposal requires review.
-
-Review evaluates:
-
-safety
-consistency
-reversibility
-compatibility
-mission alignment
-
-Unsafe evolution must be rejected.
-
-Evolution Approval
-
-Species-level changes require approval.
-
-Approval may involve:
-
-governance systems
-human operators
-future species governance structures
-
-No automatic Genome modification is permitted.
-
-Evolution Registry
-
-The species maintains an Evolution Registry.
-
-The registry contains:
-
-opportunities
-proposals
-reviews
-approvals
-rejections
-historical evolution records
-
-Species history must remain traceable.
-
-Evolution Rollback
-
-Every evolution event must be reversible.
-
-Rollback mechanisms include:
-
-Genome restoration
-Constitution restoration
-Species architecture restoration
-
-No irreversible species mutation is allowed.
-
-Evolution and Experience
-
-Experience is the primary source of evolution.
-
-Repeated lessons reveal species weaknesses.
-
-Repeated successes reveal species strengths.
-
-Experience guides evolution.
-
-Evolution and Security
-
-Security constrains evolution.
-
-Security may reject unsafe evolution.
-
-Evolution may not bypass Security.
-
-Security protects species continuity.
-
-Evolution and Cambium
-
-Cambium improves individuals.
-
-Species Evolution improves future generations.
-
-These responsibilities must remain separate.
-
-Evolution and Seeds
-
-Seeds inherit the current Genome.
-
-Future Seeds inherit evolved Genomes.
-
-Evolution affects descendants.
-
-Not ancestors.
-
-Evolution Failure
-
-Failure conditions include:
-
-uncontrolled mutation
-unsupported evolution
-irreversible evolution
-identity loss
-Constitution violation
-
-These conditions represent existential species risk.
-
-Evolution Recovery
-
-Recovery mechanisms include:
-
-rollback
-Genome restoration
-Constitution restoration
-historical reconstruction
-
-Species continuity must remain recoverable.
-
-Evolution Maturity Principle
-
-A mature species does not evolve quickly.
-
-A mature species evolves deliberately.
-
-The purpose of evolution is not change.
-
-The purpose of evolution is improvement.
-
-Final Rule
-
-A PHYTCOI individual may grow.
-
-A PHYTCOI species may evolve.
-
-Growth changes the individual.
-
-Evolution changes the future.
-
-A species survives not because it changes constantly.
-
-A species survives because it changes wisely.
+PHYTCOI is defined by its architecture, not by a particular implementation.
