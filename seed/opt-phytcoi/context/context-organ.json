@@ -1,0 +1,39 @@
+{
+  "organ_id": "context",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "derive situational meaning from validated relationships",
+  "inputs": [
+    "relationship_records",
+    "experience_state"
+  ],
+  "outputs": [
+    "context_records",
+    "context_journal"
+  ],
+  "allowed_actions": [
+    "read_relationships",
+    "read_experience",
+    "derive_context",
+    "persist_context"
+  ],
+  "forbidden_actions": [
+    "decision",
+    "execution",
+    "habitat_modification",
+    "approval",
+    "lifecycle_change",
+    "hardcode_local_names"
+  ],
+  "principles": [
+    "context_first",
+    "relationship_first",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_local_logic",
+    "observe_only"
+  ]
+}

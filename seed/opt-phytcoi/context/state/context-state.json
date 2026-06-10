@@ -1,0 +1,12 @@
+{
+  "organ": "context",
+  "species": "PHYTCOI",
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "birth_timestamp": null,
+  "last_run": null,
+  "run_count": 0,
+  "context_records_count": 0,
+  "last_context_type": null,
+  "confidence": null
+}
