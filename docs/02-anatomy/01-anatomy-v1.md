@@ -1,453 +1,285 @@
-# PHYTCOI Anatomy v1
+# Anatomy v1
 
-## Definition
+## Status
 
-PHYTCOI is a cognitive species.
+Approved
 
-Its anatomy is composed of biological systems called Organs.
+## Scope
 
-An Organ is a persistent structural component responsible for hosting capabilities and intelligences.
+Defines the biological anatomy of a PHYTCOI organism.
 
-Organs may contain multiple Intelligences.
+This document describes the major organs currently implemented within the species and their functional responsibilities.
 
-Intelligences may collaborate across multiple Organs.
+The anatomy is intentionally organized according to biological principles.
 
-The anatomy of the species is universal.
+Each organ must have a unique purpose.
 
-Local habitat adaptations are not part of the Anatomy.
+No duplicated organs are allowed.
 
----
-
-# Anatomical Principles
-
-## Principle 1
-
-One Organ, One Primary Responsibility.
-
-Every Organ must have a clear purpose.
+No overlapping responsibilities are allowed.
 
 ---
 
-## Principle 2
+# Organism Structure
 
-No Redundant Organs.
+A PHYTCOI organism is composed of cognitive organs that cooperate to perceive, learn, understand and eventually govern a habitat.
 
-If an Organ already exists, it must be extended rather than duplicated.
-
----
-
-## Principle 3
-
-Organs Host Intelligences.
-
-Organs are structural.
-
-Intelligences are cognitive.
-
-Capabilities are operational.
-
-Actions are executable outcomes.
+The current implementation focuses exclusively on OBSERVE lifecycle capabilities.
 
 ---
 
-## Principle 4
+# Current Anatomy
 
-Genome Before DNA.
-
-Organs belong to the Genome.
-
-Local adaptations belong to DNA.
-
----
-
-# Anatomical Structure
-
-## Kernel
-
-### Purpose
-
-Maintain existence.
-
-### Hosts
-
-* Identity Intelligence
-* Trust Intelligence
-* Survival Intelligence
-* Policy Intelligence
-
-### Responsibilities
-
-* Identity
-* Mission
-* Boundaries
-* Trust
-* Survival
-* Lifecycle Stage
-
-### Failure Consequence
-
-Individual death.
-
-Kernel is mandatory.
-
----
-
-## Root System
+## Observer
 
 ### Purpose
 
 Observe reality.
 
-### Hosts
-
-* Discovery Intelligence
-* Classification Intelligence
-
 ### Responsibilities
 
-* Evidence collection
-* Object discovery
-* Capability discovery
-* Relationship discovery
+* Gather evidence
+* Execute probes
+* Observe habitat signals
+* Observe organism signals
 
 ### Outputs
 
 * Evidence
-* Object candidates
-* Capability candidates
+* Observations
 
 ---
 
-## DNA System
+## Discovery
 
 ### Purpose
 
-Store habitat knowledge.
-
-### Hosts
-
-* Memory Intelligence
+Discover functions and classifications.
 
 ### Responsibilities
 
-* Object Registry
-* Capability Registry
-* Relationship Registry
-* Dependency Registry
-* Risk Registry
+* Analyze evidence
+* Generate function candidates
+* Generate classification candidates
+* Identify emerging patterns
 
 ### Outputs
 
-* Habitat DNA
+* Discovery Records
+* Function Candidates
+* Classification Candidates
 
 ---
 
-## Cambium
+## Memory
 
 ### Purpose
 
-Generate local adaptation.
-
-### Hosts
-
-* Adaptation Intelligence
+Retain information over time.
 
 ### Responsibilities
 
-* Driver generation
-* Capability generation
-* Local adaptation
+* Store observations
+* Preserve discoveries
+* Maintain continuity
 
 ### Outputs
 
-* germ_drivers
-* germ_capabilities
-* germ_policies
+* Memory Records
+* Historical Context
 
 ---
 
-## Brain System
+## Experience
 
 ### Purpose
 
-Reason and decide.
-
-### Hosts
-
-* Planning Intelligence
-* Decision Intelligence
-* Learning Intelligence
-* Memory Intelligence
+Recognize recurring outcomes.
 
 ### Responsibilities
 
-* Planning
-* Decision making
-* Experience generation
-* Behavioral improvement
+* Compare historical patterns
+* Detect repetition
+* Evaluate consistency
 
 ### Outputs
 
-* Plans
-* Decisions
-* Experience
+* Experience Records
+* Experience Types
+
+Current Example:
+
+stable_growth
 
 ---
 
-## Endocrine System
+## Knowledge
 
 ### Purpose
 
-Manage priorities.
+Convert experiences into reusable truths.
 
 ### Responsibilities
 
-Transform observations into urgency signals.
+* Identify persistent patterns
+* Produce validated knowledge
+* Reduce uncertainty
+
+### Outputs
+
+* Knowledge Records
+* Knowledge Types
+
+Current Example:
+
+stable_internal_metabolism
+
+---
+
+## Understanding
+
+### Purpose
+
+Derive meaning from knowledge.
+
+### Responsibilities
+
+* Interpret knowledge
+* Determine significance
+* Generate meaning
+
+### Outputs
+
+* Understanding Records
+* Understanding Types
+
+Current Example:
+
+healthy_internal_growth
+
+---
+
+# Cognitive Flow
+
+Current cognitive flow:
+
+Observer
+
+↓
+
+Discovery
+
+↓
+
+Memory
+
+↓
+
+Experience
+
+↓
+
+Knowledge
+
+↓
+
+Understanding
+
+---
+
+# Future Anatomy
+
+The following organs are planned but not yet implemented.
+
+---
+
+## Relationship Understanding
+
+Purpose:
+
+Understand relationships between functions.
 
 Examples:
 
-* Resource pressure
-* Habitat stress
-* Identity degradation
-* Survival threats
-
-### Outputs
-
-* Priority Signals
+* depends_on
+* provides_to
+* protects
+* authorizes
+* backs_up
 
 ---
 
-## Metabolism
+## Habitat Understanding
 
-### Purpose
+Purpose:
 
-Manage resources.
+Understand the ecosystem as a complete habitat.
 
-### Responsibilities
+Examples:
 
-* Resource accounting
-* Resource allocation
-* Resource elasticity
-* Waste removal
-* Autophagy
-
-### Outputs
-
-* Resource State
-* Resource Plans
+* resilience
+* redundancy
+* survivability
+* bottlenecks
+* critical dependencies
 
 ---
 
-## Immune System
+## Governance Cortex
 
-### Purpose
+Purpose:
 
-Detect disease.
+Future governance and decision support.
 
-### Hosts
-
-* Survival Intelligence
-
-### Responsibilities
-
-* Disease detection
-* Risk analysis
-* Integrity verification
-
-### Outputs
-
-* Alerts
-* Diagnoses
-* Risk Assessments
+Not active.
 
 ---
 
-## Regeneration System
+## Execution Cortex
 
-### Purpose
+Purpose:
 
-Restore capability.
+Future execution layer.
 
-### Hosts
-
-* Regeneration Intelligence
-
-### Responsibilities
-
-* Repair
-* Recovery
-* Rollback
-* Restoration
-
-### Outputs
-
-* Recovery Plans
-* Recovery Actions
+Not active.
 
 ---
 
-## Trunk
+# Constitutional Constraints
 
-### Purpose
+All organs must obey:
 
-Coordinate internal communication.
+* Function First
+* Evidence First
+* Relationship First
+* No Vendor Truth
+* No Local Logic
 
-### Hosts
+Local identifiers are permitted only during germination.
 
-* Communication Intelligence
-
-### Responsibilities
-
-* Event transport
-* State propagation
-* Context propagation
-
-### Outputs
-
-* Event Streams
-* Context Flows
+Long-term cognition must operate exclusively on functions, capabilities and relationships.
 
 ---
 
-## Canopy
+# Current Species State
 
-### Purpose
+Implemented Organs:
 
-Interact with the external world.
+* Observer
+* Discovery
+* Memory
+* Experience
+* Knowledge
+* Understanding
 
-### Hosts
+Lifecycle:
 
-* Communication Intelligence
+OBSERVE
 
-### Responsibilities
+Status:
 
-* Human interaction
-* API interaction
-* Executor interaction
-* External visibility
+ALIVE
 
-### Outputs
+Cognitive Maturity:
 
-* Commands
-* Responses
-* Notifications
-
----
-
-## Reproductive System
-
-### Purpose
-
-Preserve species continuity.
-
-### Responsibilities
-
-* Seed generation
-* Seed export
-* Species migration
-* Species replication
-
-### Outputs
-
-* Seed Packages
-
----
-
-## Social Cortex
-
-### Purpose
-
-Enable collective intelligence.
-
-### Hosts
-
-* Social Intelligence
-
-### Responsibilities
-
-* Knowledge sharing
-* Delegation
-* Consensus
-* Cooperation
-
-### Outputs
-
-* Collective Knowledge
-
-### Status
-
-Future capability.
-
-Not required for PHYT-001.
-
----
-
-# Anatomical Hierarchy
-
-## Mandatory Organs
-
-Required for life:
-
-* Kernel
-* Root System
-* DNA System
-* Brain System
-
-Without these organs an individual is not viable.
-
----
-
-## Survival Organs
-
-Required for maturity:
-
-* Endocrine System
-* Metabolism
-* Immune System
-* Regeneration System
-
----
-
-## Operational Organs
-
-Required for habitat governance:
-
-* Trunk
-* Canopy
-
----
-
-## Species Organs
-
-Required for species continuity:
-
-* Reproductive System
-* Social Cortex
-
----
-
-# First Individual Requirements
-
-A newborn individual is considered alive only if:
-
-* Kernel is active.
-* Root System is active.
-* DNA System exists.
-* Brain System exists.
-* Mission is loaded.
-* Lifecycle Stage is defined.
-
-Only then may the individual enter OBSERVE stage.
-
----
-
-# Final Anatomical Rule
-
-Every new Organ must answer:
-
-* Why does it exist?
-* What does it consume?
-* What does it produce?
-* What happens if it dies?
-
-If these questions cannot be answered, the Organ must not exist.
+M3 — Understanding
