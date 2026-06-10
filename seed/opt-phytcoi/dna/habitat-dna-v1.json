@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-06-09T14:59:52+02:00",
+  "observer": "PHYT-001",
+  "type": "habitat_dna",
+  "network": {
+    "self_ip": "192.168.1.221",
+    "gateway": "192.168.1.1",
+    "gateway_reachable": true,
+    "dns_servers": "192.168.1.251,192.168.1.203",
+    "search_domain": "biondra.lan"
+  }
+}

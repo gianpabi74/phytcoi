@@ -1,0 +1,220 @@
+{
+  "timestamp": "2026-06-10T19:03:22.555286+02:00",
+  "organ": "discovery",
+  "lifecycle": "OBSERVE",
+  "interpretation_type": "evidence_to_candidate_capability",
+  "status": "INTERPRETED",
+  "source": "/opt/phytcoi/evidence/habitat/state/tcp-service-observation-latest.json",
+  "candidate_count": 12,
+  "interpreted_candidates": [
+    {
+      "object": "192.168.1.1",
+      "candidate_capability": "web_surface_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_80_open",
+        "tcp_443_open"
+      ],
+      "classification_basis": "web_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "authentication_ticket_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_88_open",
+        "tcp_464_open"
+      ],
+      "classification_basis": "ticket_authentication_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "directory_service_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_389_open",
+        "tcp_636_open"
+      ],
+      "classification_basis": "directory_service_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "directory_catalog_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_3268_open",
+        "tcp_3269_open"
+      ],
+      "classification_basis": "directory_catalog_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "file_or_directory_related_service_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_445_open"
+      ],
+      "classification_basis": "file_or_directory_related_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "remote_interactive_access_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_3389_open"
+      ],
+      "classification_basis": "remote_interactive_access_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "authentication_ticket_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_88_open",
+        "tcp_464_open"
+      ],
+      "classification_basis": "ticket_authentication_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "directory_service_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_389_open",
+        "tcp_636_open"
+      ],
+      "classification_basis": "directory_service_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "directory_catalog_provider",
+      "confidence": "medium",
+      "evidence": [
+        "tcp_3268_open",
+        "tcp_3269_open"
+      ],
+      "classification_basis": "directory_catalog_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "file_or_directory_related_service_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_445_open"
+      ],
+      "classification_basis": "file_or_directory_related_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "remote_interactive_access_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_3389_open"
+      ],
+      "classification_basis": "remote_interactive_access_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "remote_shell_access_provider",
+      "confidence": "low",
+      "evidence": [
+        "tcp_22_open"
+      ],
+      "classification_basis": "remote_shell_surface_observed",
+      "status": "candidate_not_truth",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity",
+        "capability_truth_without_validation"
+      ]
+    }
+  ],
+  "principles": [
+    "candidate_not_truth",
+    "evidence_first",
+    "capability_first",
+    "function_first",
+    "observe_only",
+    "no_vendor_truth",
+    "no_product_truth",
+    "no_hostname_truth"
+  ]
+}

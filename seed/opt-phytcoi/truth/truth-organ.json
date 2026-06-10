@@ -1,0 +1,45 @@
+{
+  "organ_id": "truth",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "persist validated portable truths derived from evidence, capability graphs, relationships and context",
+  "inputs": [
+    "capability_graph",
+    "relationship_records",
+    "context_records"
+  ],
+  "outputs": [
+    "truth_records",
+    "truth_journal"
+  ],
+  "allowed_actions": [
+    "read_capability_graph",
+    "read_relationships",
+    "read_context",
+    "derive_truth",
+    "persist_truth"
+  ],
+  "forbidden_actions": [
+    "decision",
+    "execution",
+    "habitat_modification",
+    "approval",
+    "lifecycle_change",
+    "hardcode_local_names",
+    "vendor_truth",
+    "product_truth"
+  ],
+  "principles": [
+    "truth_from_evidence",
+    "truth_from_relationship",
+    "truth_from_context",
+    "portable_truth",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_local_logic",
+    "observe_only"
+  ]
+}

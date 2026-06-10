@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+SELF = ROOT / "self"
+
+def read_json(path, default=None):
+    try:
+        if path.exists():
+            return json.loads(path.read_text())
+    except Exception:
+        pass
+    return default
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+
+    identity = read_json(ROOT / "identity" / "phyt-001.json", {})
+    self_model = read_json(SELF / "state" / "self-model.json", {})
+    graph = read_json(ROOT / "discovery" / "graph" / "capability-graph-latest.json", {})
+    self_dna = read_json(ROOT / "dna" / "self-dna-v1.json", {})
+    nest_dna = read_json(ROOT / "dna" / "nest-dna-v1.json", {})
+    habitat_dna = read_json(ROOT / "dna" / "habitat-dna-v1.json", {})
+    world_model = read_json(ROOT / "runtime" / "world-model-v1.json", {})
+
+    organs = sorted([
+        o.get("organ_id")
+        for o in self_model.get("known_organs", [])
+        if o.get("organ_id")
+    ])
+
+    capabilities = sorted(list(graph.get("capabilities", {}).keys()))
+    habitat_objects = sorted(list(graph.get("objects", {}).keys()))
+
+    boundary = {
+        "timestamp": now,
+        "organ": "self",
+        "boundary_type": "self_habitat_boundary",
+        "species": identity.get("species", "PHYTCOI"),
+        "individual": identity.get("individual", "PHYT-001"),
+        "nest": identity.get("nest", "NEST-ALPHA"),
+        "lifecycle": identity.get("lifecycle", "OBSERVE"),
+        "status": "BOUNDARY_DEFINED",
+        "definitions": {
+            "self": "PHYTCOI is the observing cognitive organism.",
+            "nest": "The nest is the runtime container or host environment where the PHYTCOI individual currently lives.",
+            "habitat": "The habitat is the external environment observed by PHYTCOI.",
+            "organ": "An organ is an internal PHYTCOI capability-bearing cognitive subsystem.",
+            "habitat_object": "A habitat object is an external observed object, endpoint, service or system in the habitat.",
+            "capability": "A capability is an observed functional ability associated with a habitat object or future internal organ, but it is not itself an organ.",
+            "truth": "A truth is a validated portable statement derived from evidence, relationship and context."
+        },
+        "boundary_rules": [
+            "PHYTCOI is not the habitat.",
+            "PHYTCOI is not the nest.",
+            "The nest hosts PHYTCOI but is not PHYTCOI.",
+            "Organs belong to PHYTCOI.",
+            "Habitat objects belong to the habitat.",
+            "Capabilities describe functional abilities; they are not organs by default.",
+            "IP addresses are habitat object identifiers, not organs.",
+            "Hostnames are labels, not truth.",
+            "Products and vendors are implementation details, not ontology.",
+            "In OBSERVE lifecycle PHYTCOI may observe, record, relate, contextualize and validate truth.",
+            "In OBSERVE lifecycle PHYTCOI must not decide, approve, execute or modify the habitat."
+        ],
+        "current_self_organs": organs,
+        "current_habitat_capabilities": capabilities,
+        "current_habitat_objects": habitat_objects,
+        "current_nest_observation": {
+            "self_ip": nest_dna.get("ip") or habitat_dna.get("network", {}).get("self_ip") or world_model.get("self", {}).get("ip"),
+            "hostname": nest_dna.get("hostname") or world_model.get("self", {}).get("hostname"),
+            "gateway": habitat_dna.get("network", {}).get("gateway"),
+            "os": nest_dna.get("os"),
+            "kernel": nest_dna.get("kernel")
+        },
+        "known_boundary_warnings": [],
+        "forbidden_confusions": [
+            "do_not_treat_ip_address_as_organ",
+            "do_not_treat_hostname_as_identity_truth",
+            "do_not_treat_vendor_as_truth",
+            "do_not_treat_product_as_truth",
+            "do_not_treat_habitat_capability_as_internal_organ",
+            "do_not_treat_nest_as_organism"
+        ]
+    }
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    out_dir = SELF / "boundary"
+    state_dir = SELF / "state"
+    journal_dir = SELF / "journal"
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    journal_dir.mkdir(parents=True, exist_ok=True)
+
+    record_file = out_dir / f"self-habitat-boundary-{stamp}.json"
+    latest_file = state_dir / "self-habitat-boundary-latest.json"
+    journal_file = journal_dir / f"boundary-run-{stamp}.json"
+
+    record_file.write_text(json.dumps(boundary, indent=2) + "\n")
+    latest_file.write_text(json.dumps(boundary, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "self",
+        "status": "OK",
+        "record_file": str(record_file),
+        "latest_file": str(latest_file),
+        "organ_count": len(organs),
+        "habitat_object_count": len(habitat_objects),
+        "habitat_capability_count": len(capabilities),
+        "warning_count": len(boundary["known_boundary_warnings"])
+    }, indent=2) + "\n")
+
+    print("===== SELF-HABITAT BOUNDARY =====")
+    print("status=BOUNDARY_DEFINED")
+    print(f"self={boundary['individual']}")
+    print(f"nest={boundary['nest']}")
+    print(f"lifecycle={boundary['lifecycle']}")
+    print(f"organs={len(organs)}")
+    print(f"habitat_objects={len(habitat_objects)}")
+    print(f"habitat_capabilities={len(capabilities)}")
+    if boundary["known_boundary_warnings"]:
+        for warning in boundary["known_boundary_warnings"]:
+            print(f"warning={warning.get('id')}")
+    else:
+        print("warnings=0")
+    print()
+    print("PHYTCOI is not the habitat.")
+    print("The nest hosts PHYTCOI but is not PHYTCOI.")
+    print("Organs belong to PHYTCOI.")
+    print("Habitat objects belong to the habitat.")
+    print("Capabilities are functional abilities, not organs by default.")
+    print("In OBSERVE lifecycle PHYTCOI must not decide, approve, execute or modify the habitat.")
+    print()
+    print("===== FILES =====")
+    print(f"record_file={record_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

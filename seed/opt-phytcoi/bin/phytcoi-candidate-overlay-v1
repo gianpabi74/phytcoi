@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+VALIDATED = ROOT / "discovery/graph/capability-graph-latest.json"
+CANDIDATES = ROOT / "discovery/state/interpreted-capabilities-latest.json"
+
+OUTDIR = ROOT / "discovery/graph"
+CONTEXT_STATE = ROOT / "context/state"
+
+def load(path):
+    return json.loads(path.read_text())
+
+validated = load(VALIDATED)
+candidates = load(CANDIDATES)
+
+overlay = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "discovery",
+    "lifecycle": "OBSERVE",
+    "overlay_type": "candidate_capability_overlay",
+    "validated_capability_count":
+        validated.get("capability_count", 0),
+    "candidate_capability_count": 0,
+    "validated_capabilities":
+        sorted(list(validated.get("capabilities", {}).keys())),
+    "candidate_capabilities": {},
+    "objects": {}
+}
+
+candidate_count = 0
+
+for item in candidates.get("interpreted_candidates", []):
+    obj = item["object"]
+    cap = item["candidate_capability"]
+
+    overlay["candidate_capabilities"].setdefault(cap, {
+        "providers": [],
+        "status": "candidate",
+        "confidence": item["confidence"]
+    })
+
+    if obj not in overlay["candidate_capabilities"][cap]["providers"]:
+        overlay["candidate_capabilities"][cap]["providers"].append(obj)
+
+    overlay["objects"].setdefault(obj, [])
+    overlay["objects"][obj].append(cap)
+
+    candidate_count += 1
+
+overlay["candidate_capability_count"] = candidate_count
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+overlay_file = OUTDIR / f"candidate-overlay-{stamp}.json"
+overlay_latest = OUTDIR / "candidate-overlay-latest.json"
+
+overlay_file.write_text(json.dumps(overlay, indent=2) + "\n")
+overlay_latest.write_text(json.dumps(overlay, indent=2) + "\n")
+
+awareness = {
+    "timestamp": overlay["timestamp"],
+    "validated_capabilities":
+        len(overlay["validated_capabilities"]),
+    "candidate_capabilities":
+        candidate_count,
+    "cognitive_state":
+        "EMERGING_COGNITION",
+    "statement":
+        "PHYTCOI distinguishes validated cognition from emerging cognition."
+}
+
+(CONTEXT_STATE / "emerging-cognition-latest.json").write_text(
+    json.dumps(awareness, indent=2) + "\n"
+)
+
+print("===== CANDIDATE OVERLAY =====")
+print("validated_capabilities =", len(overlay["validated_capabilities"]))
+print("candidate_capabilities =", candidate_count)
+
+print()
+print("Validated:")
+for c in overlay["validated_capabilities"]:
+    print(" -", c)
+
+print()
+print("Candidates:")
+for c in sorted(overlay["candidate_capabilities"].keys()):
+    print(" -", c)
+
+print()
+print("overlay_file =", overlay_file)
+print("overlay_latest =", overlay_latest)

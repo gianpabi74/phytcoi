@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-06-10T19:24:28.994165+02:00",
+  "organ": "experience",
+  "lifecycle": "OBSERVE",
+  "stability_type": "domain_temporal_stability",
+  "domain_count": 4,
+  "domains": [
+    {
+      "domain": "file_and_directory_services",
+      "experience_type": "temporal_stability_observation",
+      "observation_count": 1,
+      "stable_count": 1,
+      "stability_pct": 100.0,
+      "stability_status": "insufficient_temporal_depth",
+      "signature": {
+        "supporting_capabilities": [
+          "file_or_directory_related_service_provider"
+        ],
+        "confidence_pct": 100.0,
+        "ledger_status": "validation_candidate"
+      },
+      "validation_impact": "not_validating",
+      "required_before_validation": [
+        "minimum_three_temporal_observations",
+        "stable_signature_across_observations",
+        "relationship_context_generation",
+        "truth_derivation_candidate"
+      ]
+    },
+    {
+      "domain": "identity_and_authentication",
+      "experience_type": "temporal_stability_observation",
+      "observation_count": 1,
+      "stable_count": 1,
+      "stability_pct": 100.0,
+      "stability_status": "insufficient_temporal_depth",
+      "signature": {
+        "supporting_capabilities": [
+          "authentication_ticket_provider",
+          "directory_catalog_provider",
+          "directory_service_provider"
+        ],
+        "confidence_pct": 100.0,
+        "ledger_status": "validation_candidate"
+      },
+      "validation_impact": "not_validating",
+      "required_before_validation": [
+        "minimum_three_temporal_observations",
+        "stable_signature_across_observations",
+        "relationship_context_generation",
+        "truth_derivation_candidate"
+      ]
+    },
+    {
+      "domain": "remote_access",
+      "experience_type": "temporal_stability_observation",
+      "observation_count": 1,
+      "stable_count": 1,
+      "stability_pct": 100.0,
+      "stability_status": "insufficient_temporal_depth",
+      "signature": {
+        "supporting_capabilities": [
+          "remote_interactive_access_provider",
+          "remote_shell_access_provider"
+        ],
+        "confidence_pct": 100.0,
+        "ledger_status": "validation_candidate"
+      },
+      "validation_impact": "not_validating",
+      "required_before_validation": [
+        "minimum_three_temporal_observations",
+        "stable_signature_across_observations",
+        "relationship_context_generation",
+        "truth_derivation_candidate"
+      ]
+    },
+    {
+      "domain": "web_services",
+      "experience_type": "temporal_stability_observation",
+      "observation_count": 1,
+      "stable_count": 1,
+      "stability_pct": 100.0,
+      "stability_status": "insufficient_temporal_depth",
+      "signature": {
+        "supporting_capabilities": [
+          "web_surface_provider"
+        ],
+        "confidence_pct": 100.0,
+        "ledger_status": "validation_candidate"
+      },
+      "validation_impact": "not_validating",
+      "required_before_validation": [
+        "minimum_three_temporal_observations",
+        "stable_signature_across_observations",
+        "relationship_context_generation",
+        "truth_derivation_candidate"
+      ]
+    }
+  ],
+  "principles": [
+    "experience_from_repetition",
+    "temporal_stability_not_validation",
+    "confidence_not_truth",
+    "observe_only",
+    "no_decision",
+    "no_execution"
+  ]
+}

@@ -1,0 +1,193 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+SELF = ROOT / "self"
+
+MODEL_FILE = SELF / "state" / "self-model.json"
+REFLECTION_FILE = SELF / "state" / "self-reflection-latest.json"
+GRAPH_FILE = ROOT / "discovery" / "graph" / "capability-graph-latest.json"
+TRUTH_STATE_FILE = ROOT / "truth" / "state" / "truth-state.json"
+TRUTH_RECORDS = ROOT / "truth" / "records"
+
+NON_ORGAN_DIRS = {
+    ".", "bin", "logs", "runtime", "state", "audit_backups"
+}
+
+CORE_ORGAN_MARKERS = {
+    "observer", "discovery", "memory", "experience", "knowledge",
+    "understanding", "relationship", "context", "truth", "self"
+}
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+def observed_filesystem_organs():
+    organs = []
+    for p in sorted(ROOT.iterdir()):
+        if not p.is_dir():
+            continue
+
+        name = p.name
+        if name in NON_ORGAN_DIRS:
+            continue
+
+        has_descriptor = any(p.glob("*-organ.json"))
+        has_state = (p / "state").is_dir()
+        has_journal = (p / "journal").is_dir()
+        is_core = name in CORE_ORGAN_MARKERS
+
+        if has_descriptor or is_core or (has_state and has_journal):
+            organs.append(name)
+
+    return organs
+
+def add_check(checks, check_id, status, message, severity="info"):
+    checks.append({
+        "check_id": check_id,
+        "status": status,
+        "severity": severity,
+        "message": message
+    })
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+
+    checks = []
+    contradictions = []
+    warnings = []
+
+    model = read_json(MODEL_FILE)
+    reflection = read_json(REFLECTION_FILE)
+    graph = read_json(GRAPH_FILE)
+    truth_state = read_json(TRUTH_STATE_FILE)
+    truth_records = sorted(TRUTH_RECORDS.glob("*.json")) if TRUTH_RECORDS.exists() else []
+
+    model_organs = sorted([o.get("organ_id") for o in model.get("known_organs", []) if o.get("organ_id")])
+    fs_organs = sorted(observed_filesystem_organs())
+
+    if model.get("individual") == reflection.get("individual"):
+        add_check(checks, "individual_consistency", "PASS", "self-model and reflection agree on individual")
+    else:
+        msg = "self-model and reflection disagree on individual"
+        add_check(checks, "individual_consistency", "FAIL", msg, "critical")
+        contradictions.append(msg)
+
+    if model.get("lifecycle") == reflection.get("lifecycle") == "OBSERVE":
+        add_check(checks, "lifecycle_consistency", "PASS", "self-model and reflection agree on OBSERVE lifecycle")
+    else:
+        msg = "lifecycle mismatch or non-OBSERVE lifecycle detected"
+        add_check(checks, "lifecycle_consistency", "FAIL", msg, "critical")
+        contradictions.append(msg)
+
+    if model_organs == fs_organs:
+        add_check(checks, "organ_inventory_consistency", "PASS", "self-model organ inventory matches observed filesystem organs")
+    else:
+        missing_in_model = sorted(set(fs_organs) - set(model_organs))
+        missing_in_fs = sorted(set(model_organs) - set(fs_organs))
+        msg = f"organ inventory mismatch; missing_in_model={missing_in_model}; missing_in_filesystem={missing_in_fs}"
+        add_check(checks, "organ_inventory_consistency", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    model_cap_count = model.get("cognition", {}).get("capability_graph", {}).get("capability_count")
+    reflection_cap_count = reflection.get("capability_count")
+    graph_cap_count = graph.get("capability_count", len(graph.get("capabilities", {})))
+
+    if model_cap_count == reflection_cap_count == graph_cap_count:
+        add_check(checks, "capability_count_consistency", "PASS", "capability counts match across graph, self-model and reflection")
+    else:
+        msg = f"capability count mismatch; graph={graph_cap_count}; model={model_cap_count}; reflection={reflection_cap_count}"
+        add_check(checks, "capability_count_consistency", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    model_truth_count = model.get("cognition", {}).get("truth", {}).get("truth_records_count")
+    reflection_truth_count = reflection.get("truth_records_count")
+    state_truth_count = truth_state.get("truth_records_count")
+    actual_truth_count = len(truth_records)
+
+    if model_truth_count == reflection_truth_count == state_truth_count == actual_truth_count:
+        add_check(checks, "truth_count_consistency", "PASS", "truth record counts match across truth-state, records, self-model and reflection")
+    else:
+        msg = f"truth count mismatch; state={state_truth_count}; actual={actual_truth_count}; model={model_truth_count}; reflection={reflection_truth_count}"
+        add_check(checks, "truth_count_consistency", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    model_truth_id = model.get("cognition", {}).get("truth", {}).get("last_truth_id")
+    reflection_truth_id = reflection.get("strongest_truth_id")
+    if model_truth_id == reflection_truth_id:
+        add_check(checks, "strongest_truth_consistency", "PASS", "self-model and reflection agree on strongest truth")
+    else:
+        msg = f"strongest truth mismatch; model={model_truth_id}; reflection={reflection_truth_id}"
+        add_check(checks, "strongest_truth_consistency", "FAIL", msg, "medium")
+        contradictions.append(msg)
+
+    immature_organs = reflection.get("immature_organs", [])
+    if immature_organs:
+        msg = f"immature organs observed: {immature_organs}"
+        add_check(checks, "immature_organ_observation", "WARN", msg, "medium")
+        warnings.append(msg)
+    else:
+        add_check(checks, "immature_organ_observation", "PASS", "no immature organs observed")
+
+    status = "CONSISTENT" if not contradictions else "INCONSISTENT"
+
+    report = {
+        "timestamp": now,
+        "organ": "self",
+        "consistency_type": "self_consistency",
+        "lifecycle": model.get("lifecycle"),
+        "status": status,
+        "checks": checks,
+        "contradictions": contradictions,
+        "warnings": warnings,
+        "summary": {
+            "filesystem_organ_count": len(fs_organs),
+            "self_model_organ_count": len(model_organs),
+            "capability_count": graph_cap_count,
+            "truth_records_count": actual_truth_count,
+            "strongest_truth_id": model_truth_id
+        }
+    }
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    out_dir = SELF / "consistency"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (SELF / "state").mkdir(parents=True, exist_ok=True)
+    (SELF / "journal").mkdir(parents=True, exist_ok=True)
+
+    report_file = out_dir / f"self-consistency-{stamp}.json"
+    latest_file = SELF / "state" / "self-consistency-latest.json"
+    journal_file = SELF / "journal" / f"consistency-run-{stamp}.json"
+
+    report_file.write_text(json.dumps(report, indent=2) + "\n")
+    latest_file.write_text(json.dumps(report, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "self",
+        "status": status,
+        "report_file": str(report_file),
+        "latest_file": str(latest_file),
+        "contradiction_count": len(contradictions),
+        "warning_count": len(warnings)
+    }, indent=2) + "\n")
+
+    print("===== SELF CONSISTENCY REPORT =====")
+    print(f"status={status}")
+    print(f"contradictions={len(contradictions)}")
+    print(f"warnings={len(warnings)}")
+    print(f"filesystem_organ_count={len(fs_organs)}")
+    print(f"self_model_organ_count={len(model_organs)}")
+    print(f"capability_count={graph_cap_count}")
+    print(f"truth_records_count={actual_truth_count}")
+    print()
+    for check in checks:
+        print(f"{check['status']} {check['check_id']}: {check['message']}")
+    print()
+    print("===== FILES =====")
+    print(f"report_file={report_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-06-10T19:10:01.134643+02:00",
+  "organ": "context",
+  "lifecycle": "OBSERVE",
+  "domain_type": "cognitive_domain_awareness",
+  "validated_domain_count": 2,
+  "emerging_domain_count": 4,
+  "validated_domains": [
+    {
+      "domain": "name_resolution",
+      "status": "validated",
+      "supporting_capabilities": [
+        "authoritative_name_provider",
+        "recursive_resolution_provider"
+      ]
+    },
+    {
+      "domain": "network_access",
+      "status": "validated",
+      "supporting_capabilities": [
+        "network_gateway_provider"
+      ]
+    }
+  ],
+  "emerging_domains": [
+    {
+      "domain": "identity_and_authentication",
+      "status": "emerging",
+      "supporting_capabilities": [
+        "authentication_ticket_provider",
+        "directory_catalog_provider",
+        "directory_service_provider"
+      ]
+    },
+    {
+      "domain": "remote_access",
+      "status": "emerging",
+      "supporting_capabilities": [
+        "remote_interactive_access_provider",
+        "remote_shell_access_provider"
+      ]
+    },
+    {
+      "domain": "web_services",
+      "status": "emerging",
+      "supporting_capabilities": [
+        "web_surface_provider"
+      ]
+    },
+    {
+      "domain": "file_and_directory_services",
+      "status": "emerging",
+      "supporting_capabilities": [
+        "file_or_directory_related_service_provider"
+      ]
+    }
+  ],
+  "principles": [
+    "domain_from_capability",
+    "capability_first",
+    "function_first",
+    "candidate_not_truth",
+    "observe_only",
+    "no_vendor_truth",
+    "no_hostname_truth"
+  ]
+}

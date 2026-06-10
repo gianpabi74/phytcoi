@@ -3,10 +3,11 @@
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
-  "birth_timestamp": null,
-  "last_run": null,
-  "run_count": 0,
-  "relationship_records_count": 0,
-  "last_relationship_type": null,
-  "confidence": null
+  "birth_timestamp": "2026-06-10T11:41:21+02:00",
+  "last_run": "2026-06-10T19:08:38.139648+02:00",
+  "run_count": 19,
+  "relationship_records_count": 30,
+  "last_relationship_type": "depends_on",
+  "confidence": "high",
+  "last_scope": "habitat_cognition"
 }

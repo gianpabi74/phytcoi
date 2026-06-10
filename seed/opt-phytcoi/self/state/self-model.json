@@ -1,0 +1,157 @@
+{
+  "species": "PHYTCOI",
+  "individual": "PHYT-001",
+  "nest": "NEST-ALPHA",
+  "lifecycle": "OBSERVE",
+  "organ": "self",
+  "status": "ALIVE",
+  "generated_at": "2026-06-10T17:49:29.128801+02:00",
+  "body_stage": "PHYTCOI_STAGE1",
+  "brain_stage": "PHYTCOI_BRAIN_STAGE1",
+  "self_statement": "PHYTCOI is a phytomorphic cognitive organism in OBSERVE lifecycle.",
+  "boundary_statement": "PHYTCOI observes its habitat but does not decide, approve, execute or modify the habitat in OBSERVE lifecycle.",
+  "known_organs": [
+    {
+      "organ_id": "context",
+      "path": "/opt/phytcoi/context",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "discovery",
+      "path": "/opt/phytcoi/discovery",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": false,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "experience",
+      "path": "/opt/phytcoi/experience",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "hypothesis",
+      "path": "/opt/phytcoi/hypothesis",
+      "descriptor_present": false,
+      "state_present": true,
+      "records_present": false,
+      "journal_present": true,
+      "confidence": "medium"
+    },
+    {
+      "organ_id": "knowledge",
+      "path": "/opt/phytcoi/knowledge",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "memory",
+      "path": "/opt/phytcoi/memory",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "observatory",
+      "path": "/opt/phytcoi/observatory",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": false,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "observer",
+      "path": "/opt/phytcoi/observer",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": false,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "relationship",
+      "path": "/opt/phytcoi/relationship",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "self",
+      "path": "/opt/phytcoi/self",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "truth",
+      "path": "/opt/phytcoi/truth",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    },
+    {
+      "organ_id": "understanding",
+      "path": "/opt/phytcoi/understanding",
+      "descriptor_present": true,
+      "state_present": true,
+      "records_present": true,
+      "journal_present": true,
+      "confidence": "high"
+    }
+  ],
+  "cognition": {
+    "capability_graph": {
+      "capability_count": 3,
+      "object_count": 3,
+      "capabilities": [
+        "authoritative_name_provider",
+        "network_gateway_provider",
+        "recursive_resolution_provider"
+      ]
+    },
+    "truth": {
+      "truth_records_count": 2,
+      "last_truth_type": "validated_habitat_truth",
+      "last_truth_id": "name_resolution_requires_authoritative_namespace_truth",
+      "confidence": "high"
+    }
+  },
+  "forbidden_until_mature": [
+    "planner",
+    "decision_engine",
+    "executor",
+    "fix_and_apply",
+    "habitat_modification"
+  ],
+  "principles": [
+    "audit_first",
+    "capability_first",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_hostname_truth",
+    "no_product_truth",
+    "observe_only"
+  ]
+}

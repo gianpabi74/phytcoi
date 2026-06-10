@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+
+EVIDENCE = ROOT / "evidence" / "habitat" / "state" / "tcp-service-observation-latest.json"
+OUT_DIR = ROOT / "discovery" / "interpreted_capabilities"
+STATE_DIR = ROOT / "discovery" / "state"
+JOURNAL_DIR = ROOT / "discovery" / "journal"
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+def candidate(obj, cap, confidence, evidence, basis):
+    return {
+        "object": obj,
+        "candidate_capability": cap,
+        "confidence": confidence,
+        "evidence": evidence,
+        "classification_basis": basis,
+        "status": "candidate_not_truth",
+        "forbidden_assumptions": [
+            "vendor_identity",
+            "product_identity",
+            "hostname_identity",
+            "capability_truth_without_validation"
+        ]
+    }
+
+def interpret_object(obs):
+    obj = obs.get("object")
+    ports = set(obs.get("open_ports", []))
+    out = []
+
+    if {88, 464}.issubset(ports):
+        out.append(candidate(
+            obj,
+            "authentication_ticket_provider",
+            "medium",
+            ["tcp_88_open", "tcp_464_open"],
+            "ticket_authentication_surface_observed"
+        ))
+
+    if {389, 636}.issubset(ports):
+        out.append(candidate(
+            obj,
+            "directory_service_provider",
+            "medium",
+            ["tcp_389_open", "tcp_636_open"],
+            "directory_service_surface_observed"
+        ))
+
+    if {3268, 3269}.issubset(ports):
+        out.append(candidate(
+            obj,
+            "directory_catalog_provider",
+            "medium",
+            ["tcp_3268_open", "tcp_3269_open"],
+            "directory_catalog_surface_observed"
+        ))
+
+    if 445 in ports:
+        out.append(candidate(
+            obj,
+            "file_or_directory_related_service_provider",
+            "low",
+            ["tcp_445_open"],
+            "file_or_directory_related_surface_observed"
+        ))
+
+    if 3389 in ports:
+        out.append(candidate(
+            obj,
+            "remote_interactive_access_provider",
+            "low",
+            ["tcp_3389_open"],
+            "remote_interactive_access_surface_observed"
+        ))
+
+    if 22 in ports:
+        out.append(candidate(
+            obj,
+            "remote_shell_access_provider",
+            "low",
+            ["tcp_22_open"],
+            "remote_shell_surface_observed"
+        ))
+
+    if {80, 443}.intersection(ports):
+        evidence = []
+        if 80 in ports:
+            evidence.append("tcp_80_open")
+        if 443 in ports:
+            evidence.append("tcp_443_open")
+        out.append(candidate(
+            obj,
+            "web_surface_provider",
+            "low",
+            evidence,
+            "web_surface_observed"
+        ))
+
+    return out
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+    evidence = read_json(EVIDENCE)
+
+    interpreted = []
+    for obs in evidence.get("observations", []):
+        interpreted.extend(interpret_object(obs))
+
+    unique = []
+    seen = set()
+    for item in interpreted:
+        key = (item["object"], item["candidate_capability"])
+        if key not in seen:
+            seen.add(key)
+            unique.append(item)
+
+    record = {
+        "timestamp": now,
+        "organ": "discovery",
+        "lifecycle": "OBSERVE",
+        "interpretation_type": "evidence_to_candidate_capability",
+        "status": "INTERPRETED",
+        "source": str(EVIDENCE),
+        "candidate_count": len(unique),
+        "interpreted_candidates": unique,
+        "principles": [
+            "candidate_not_truth",
+            "evidence_first",
+            "capability_first",
+            "function_first",
+            "observe_only",
+            "no_vendor_truth",
+            "no_product_truth",
+            "no_hostname_truth"
+        ]
+    }
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    JOURNAL_DIR.mkdir(parents=True, exist_ok=True)
+
+    record_file = OUT_DIR / f"interpreted-capabilities-{stamp}.json"
+    latest_file = STATE_DIR / "interpreted-capabilities-latest.json"
+    journal_file = JOURNAL_DIR / f"evidence-interpretation-run-{stamp}.json"
+
+    record_file.write_text(json.dumps(record, indent=2) + "\n")
+    latest_file.write_text(json.dumps(record, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "discovery",
+        "status": "OK",
+        "record_file": str(record_file),
+        "latest_file": str(latest_file),
+        "candidate_count": len(unique)
+    }, indent=2) + "\n")
+
+    print("===== EVIDENCE INTERPRETATION =====")
+    print(f"candidate_count={len(unique)}")
+    for item in unique:
+        print(f"{item['object']} -> {item['candidate_capability']} confidence={item['confidence']} evidence={item['evidence']}")
+    print()
+    print("===== FILES =====")
+    print(f"record_file={record_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

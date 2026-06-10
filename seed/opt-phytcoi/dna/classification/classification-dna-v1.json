@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-06-09T18:59:39+02:00",
+  "observer": "PHYT-001",
+  "type": "classification_dna",
+  "source": "/opt/phytcoi/discovery/classifications/classification-candidates-20260609-185939.json",
+  "validated_classifications": [
+    {
+      "object": "192.168.1.1",
+      "classification": "network_connectivity_provider",
+      "confidence": 0.90
+    },
+    {
+      "object": "192.168.1.251",
+      "classification": "resolution_provider",
+      "confidence": 0.90
+    },
+    {
+      "object": "192.168.1.203",
+      "classification": "resolution_provider",
+      "confidence": 0.90
+    }
+  ]
+}

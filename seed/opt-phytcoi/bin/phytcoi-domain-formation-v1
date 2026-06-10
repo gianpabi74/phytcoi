@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+GRAPH = ROOT / "discovery/graph/capability-graph-latest.json"
+OVERLAY = ROOT / "discovery/graph/candidate-overlay-latest.json"
+
+def load(path):
+    return json.loads(path.read_text())
+
+graph = load(GRAPH)
+overlay = load(OVERLAY)
+
+validated_caps = set(graph.get("capabilities", {}).keys())
+candidate_caps = set(overlay.get("candidate_capabilities", {}).keys())
+
+DOMAIN_MAP = {
+    "name_resolution": {
+        "validated": {
+            "authoritative_name_provider",
+            "recursive_resolution_provider"
+        },
+        "candidate": set()
+    },
+    "network_access": {
+        "validated": {
+            "network_gateway_provider"
+        },
+        "candidate": set()
+    },
+    "identity_and_authentication": {
+        "validated": set(),
+        "candidate": {
+            "authentication_ticket_provider",
+            "directory_service_provider",
+            "directory_catalog_provider"
+        }
+    },
+    "remote_access": {
+        "validated": set(),
+        "candidate": {
+            "remote_interactive_access_provider",
+            "remote_shell_access_provider"
+        }
+    },
+    "web_services": {
+        "validated": set(),
+        "candidate": {
+            "web_surface_provider"
+        }
+    },
+    "file_and_directory_services": {
+        "validated": set(),
+        "candidate": {
+            "file_or_directory_related_service_provider"
+        }
+    }
+}
+
+validated_domains = []
+emerging_domains = []
+
+for domain, rules in DOMAIN_MAP.items():
+
+    valid_match = validated_caps.intersection(rules["validated"])
+    cand_match = candidate_caps.intersection(rules["candidate"])
+
+    if valid_match:
+        validated_domains.append({
+            "domain": domain,
+            "status": "validated",
+            "supporting_capabilities": sorted(valid_match)
+        })
+
+    elif cand_match:
+        emerging_domains.append({
+            "domain": domain,
+            "status": "emerging",
+            "supporting_capabilities": sorted(cand_match)
+        })
+
+payload = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "context",
+    "lifecycle": "OBSERVE",
+    "domain_type": "cognitive_domain_awareness",
+    "validated_domain_count": len(validated_domains),
+    "emerging_domain_count": len(emerging_domains),
+    "validated_domains": validated_domains,
+    "emerging_domains": emerging_domains,
+    "principles": [
+        "domain_from_capability",
+        "capability_first",
+        "function_first",
+        "candidate_not_truth",
+        "observe_only",
+        "no_vendor_truth",
+        "no_hostname_truth"
+    ]
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record = ROOT / "context/domains" / f"domain-awareness-{stamp}.json"
+latest = ROOT / "context/state/domain-awareness-latest.json"
+
+record.write_text(json.dumps(payload, indent=2) + "\n")
+latest.write_text(json.dumps(payload, indent=2) + "\n")
+
+print("===== DOMAIN FORMATION =====")
+print("validated_domains =", len(validated_domains))
+print("emerging_domains =", len(emerging_domains))
+print()
+
+print("Validated:")
+for d in validated_domains:
+    print(" -", d["domain"])
+
+print()
+
+print("Emerging:")
+for d in emerging_domains:
+    print(" -", d["domain"])
+
+print()
+print("record_file =", record)
+print("latest_file =", latest)

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-10T18:10:31.139790+02:00",
+  "organ": "truth",
+  "awareness_type": "truth_awareness",
+  "status": "AWARE",
+  "truth_record_count": 3,
+  "unique_truth_count": 1,
+  "strongest_truth": "name_resolution_requires_authoritative_namespace_truth",
+  "truths": [
+    {
+      "truth_id": "name_resolution_requires_authoritative_namespace_truth",
+      "record_count": 3,
+      "confidence": "high",
+      "truth_type": "validated_habitat_truth",
+      "statement": "recursive resolution depends on authoritative namespace truth",
+      "portable_statement": "a recursive resolution capability cannot guarantee namespace truth without an authoritative name capability"
+    }
+  ],
+  "truth_supported_domains": [
+    "name_resolution"
+  ],
+  "domains_without_truth": [
+    "identity",
+    "authentication",
+    "storage",
+    "backup",
+    "compute",
+    "security",
+    "scheduling",
+    "messaging"
+  ],
+  "awareness_text": "I possess 3 truth records.\n\nI possess 1 unique truths.\n\nMy strongest truth is:\nname_resolution_requires_authoritative_namespace_truth\n\nTruth-supported domains:\nname_resolution\n\nDomains without validated truth:\nidentity, authentication, storage, backup, compute, security, scheduling, messaging\n\nKnown truths:\nname_resolution_requires_authoritative_namespace_truth"
+}

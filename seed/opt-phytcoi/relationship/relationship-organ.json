@@ -8,7 +8,8 @@
   "inputs": [
     "knowledge_records",
     "understanding_records",
-    "classification_candidates"
+    "classification_candidates",
+    "capability_candidates"
   ],
   "outputs": [
     "relationship_records",
@@ -19,7 +20,9 @@
     "read_understanding",
     "read_classifications",
     "derive_relationship",
-    "persist_relationship"
+    "persist_relationship",
+    "read_capabilities",
+    "derive_habitat_relationship"
   ],
   "forbidden_actions": [
     "decision",

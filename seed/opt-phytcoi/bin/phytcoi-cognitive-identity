@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+
+identity = json.loads((ROOT/"identity/phyt-001.json").read_text())
+model = json.loads((ROOT/"self/state/self-model.json").read_text())
+truth = json.loads((ROOT/"truth/state/truth-awareness-latest.json").read_text())
+unknown = json.loads((ROOT/"knowledge/state/unknown-awareness-latest.json").read_text())
+
+known_domains = unknown.get("known_domains", [])
+unknown_domains = unknown.get("unknown_domains", [])
+
+coverage = unknown.get("knowledge_coverage_percent", 0)
+
+if coverage < 35:
+    maturity = "EARLY_COGNITION"
+elif coverage < 60:
+    maturity = "EMERGING_COGNITION"
+else:
+    maturity = "ADVANCED_COGNITION"
+
+identity_text = f"""
+I am {identity['individual']}.
+
+I am a {identity['species']} organism.
+
+I currently possess {len(model['known_organs'])} organs.
+
+I know {truth['unique_truth_count']} unique truths.
+
+I know {len(known_domains)} domains.
+
+I do not know {len(unknown_domains)} domains.
+
+My strongest domain is:
+{unknown.get('strongest_known_domain')}
+
+My cognitive maturity is:
+{maturity}
+
+My lifecycle is:
+{identity['lifecycle']}
+
+I am currently an observing organism.
+
+I am not yet capable of planning,
+decision making,
+execution,
+or habitat modification.
+""".strip()
+
+record = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "context",
+    "identity_type": "cognitive_identity",
+    "status": maturity,
+    "known_domains": known_domains,
+    "unknown_domains": unknown_domains,
+    "knowledge_coverage_percent": coverage,
+    "identity_text": identity_text
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record_file = ROOT/"context/cognitive_identity"/f"cognitive-identity-{stamp}.json"
+latest_file = ROOT/"context/state/cognitive-identity-latest.json"
+journal_file = ROOT/"context/journal"/f"cognitive-identity-run-{stamp}.json"
+
+record_file.write_text(json.dumps(record, indent=2) + "\n")
+latest_file.write_text(json.dumps(record, indent=2) + "\n")
+journal_file.write_text(json.dumps({
+    "timestamp": record["timestamp"],
+    "status": maturity,
+    "record_file": str(record_file)
+}, indent=2) + "\n")
+
+print("===== COGNITIVE IDENTITY =====")
+print(identity_text)
+print()
+print("===== FILES =====")
+print(record_file)
+print(latest_file)

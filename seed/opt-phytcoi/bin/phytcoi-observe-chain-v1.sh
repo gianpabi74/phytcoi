@@ -20,6 +20,7 @@ JSON
 /opt/phytcoi/bin/understanding-metabolism-v1.sh
 /opt/phytcoi/bin/relationship-metabolism-v1.sh
 /opt/phytcoi/bin/context-metabolism-v1.sh
+/opt/phytcoi/bin/truth-metabolism-v1.sh
 
 cat > /opt/phytcoi/runtime/runs/observe-chain-run-$TS.json << JSON
 {
@@ -35,7 +36,8 @@ cat > /opt/phytcoi/runtime/runs/observe-chain-run-$TS.json << JSON
     "knowledge",
     "understanding",
     "relationship",
-    "context"
+    "context",
+    "truth"
   ],
   "lifecycle": "OBSERVE"
 }
@@ -52,5 +54,6 @@ chown -R aiadmin:aiadmin \
   /opt/phytcoi/understanding \
   /opt/phytcoi/relationship \
   /opt/phytcoi/context \
+  /opt/phytcoi/truth \
   /opt/phytcoi/runtime/boot \
   /opt/phytcoi/runtime/runs

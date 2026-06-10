@@ -3,9 +3,39 @@
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
-  "birth_timestamp": null,
-  "last_render": null,
-  "render_count": 0,
+  "birth_timestamp": "2026-06-09T19:18:29+02:00",
+  "last_render": "2026-06-10T19:28:47.939078+02:00",
+  "render_count": 280,
   "port": 8088,
-  "ui_version": "observatory_v3_cognition"
+  "ui_version": "observatory_v3_habitat_context",
+  "phenotype_stage": "Seedling",
+  "phenotype_progress_pct": 60,
+  "observatory_version": 4,
+  "phase": "phase_2_compact_breathing_full_rewrite",
+  "sources": [
+    "identity/phyt-001.json",
+    "self/state/self-model.json",
+    "context/state/cognitive-identity-latest.json",
+    "knowledge/state/knowledge-awareness-latest.json",
+    "knowledge/state/unknown-awareness-latest.json",
+    "truth/state/truth-awareness-latest.json",
+    "self/state/self-habitat-boundary-latest.json",
+    "discovery/graph/capability-graph-latest.json"
+  ],
+  "forbidden": [
+    "planner",
+    "executor",
+    "decision",
+    "habitat_modification",
+    "vendor_truth",
+    "hostname_truth"
+  ],
+  "known_domains": 3,
+  "unknown_domains": 8,
+  "coverage": 27.27,
+  "validated_capabilities": 3,
+  "emerging_capability_classes": 7,
+  "emerging_candidate_count": 12,
+  "validated_domains": 2,
+  "emerging_domains": 4
 }

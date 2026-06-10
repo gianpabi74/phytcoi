@@ -375,6 +375,9 @@ h2 {{
 
     <div class="card">
       <h2>Habitat Understanding</h2>
+      <div class="metric"><div><b>{context.get('last_context_type','-')}</b><span>Last Context</span></div></div>
+      <div class="metric"><div><b>{context.get('last_scope','-')}</b><span>Scope</span></div></div>
+      <div class="metric"><div><b>{context.get('confidence','-').upper()}</b><span>Confidence</span></div></div>
       <div class="habitat-row"><div class="habitat-icon">◎</div><div>Network Provider<small>1 candidate</small></div></div>
       <div class="habitat-row"><div class="habitat-icon">▣</div><div>Resolution Providers<small>2 candidates</small></div></div>
       <div class="habitat-row"><div class="habitat-icon">✹</div><div>Germ Structures<small>{germ_count}</small></div></div>
@@ -395,5 +398,5 @@ PUB.mkdir(parents=True, exist_ok=True)
 state = load(STATE, {})
 state["last_render"] = now
 state["render_count"] = state.get("render_count", 0) + 1
-state["ui_version"] = "observatory_v3_cognition_context"
+state["ui_version"] = "observatory_v3_habitat_context"
 STATE.write_text(json.dumps(state, indent=2) + "\n")

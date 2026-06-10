@@ -1,0 +1,83 @@
+{
+  "timestamp": "2026-06-10T18:06:06.138217+02:00",
+  "organ": "self",
+  "consistency_type": "self_boundary_consistency",
+  "status": "BOUNDARY_CONSISTENT",
+  "checks": [
+    {
+      "check_id": "species_alignment",
+      "status": "PASS",
+      "severity": "info",
+      "message": "species aligns across identity, self_dna, model, reflection and boundary"
+    },
+    {
+      "check_id": "individual_alignment",
+      "status": "PASS",
+      "severity": "info",
+      "message": "individual aligns across identity, self_dna, model, reflection and boundary"
+    },
+    {
+      "check_id": "nest_alignment",
+      "status": "PASS",
+      "severity": "info",
+      "message": "nest aligns across identity, self_dna, model, reflection and boundary"
+    },
+    {
+      "check_id": "lifecycle_alignment",
+      "status": "PASS",
+      "severity": "info",
+      "message": "lifecycle aligns across identity, self_dna, model, reflection and boundary"
+    },
+    {
+      "check_id": "self_dna_type",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-dna is typed as organism self_dna"
+    },
+    {
+      "check_id": "self_dna_boundary_clean",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-dna contains no nest technical fields"
+    },
+    {
+      "check_id": "nest_dna_presence",
+      "status": "PASS",
+      "severity": "info",
+      "message": "nest-dna exists and carries nest technical observation"
+    },
+    {
+      "check_id": "boundary_warning_state",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-habitat boundary has no active warnings"
+    },
+    {
+      "check_id": "self_consistency_state",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-consistency is consistent with zero contradictions"
+    },
+    {
+      "check_id": "self_consistency_warning_carryover",
+      "status": "WARN",
+      "severity": "medium",
+      "message": "previous self-consistency warnings remain informational: [\"immature organs observed: ['hypothesis']\"]"
+    }
+  ],
+  "contradictions": [],
+  "warnings": [
+    "previous self-consistency warnings remain informational: [\"immature organs observed: ['hypothesis']\"]"
+  ],
+  "summary": {
+    "species": "PHYTCOI",
+    "individual": "PHYT-001",
+    "nest": "NEST-ALPHA",
+    "lifecycle": "OBSERVE",
+    "self_dna_type": "self_dna",
+    "nest_dna_type": "nest_dna",
+    "boundary_warning_count": 0,
+    "self_consistency_status": "CONSISTENT",
+    "self_consistency_warning_count": 1
+  }
+}

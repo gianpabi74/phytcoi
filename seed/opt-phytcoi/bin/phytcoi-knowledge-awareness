@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+
+graph = json.loads((ROOT/"discovery/graph/capability-graph-latest.json").read_text())
+truth_state = json.loads((ROOT/"truth/state/truth-state.json").read_text())
+self_model = json.loads((ROOT/"self/state/self-model.json").read_text())
+
+capabilities = sorted(graph.get("capabilities", {}).keys())
+objects = sorted(graph.get("objects", {}).keys())
+
+truth_id = (
+    self_model
+    .get("cognition", {})
+    .get("truth", {})
+    .get("last_truth_id")
+)
+
+known_organs = [
+    o["organ_id"]
+    for o in self_model.get("known_organs", [])
+]
+
+observed_domains = []
+
+if "authoritative_name_provider" in capabilities:
+    observed_domains.append("name_resolution")
+
+if "recursive_resolution_provider" in capabilities:
+    observed_domains.append("recursive_resolution")
+
+if "network_gateway_provider" in capabilities:
+    observed_domains.append("network_access")
+
+candidate_domains = [
+    "storage",
+    "identity",
+    "authentication",
+    "backup",
+    "compute",
+    "scheduling",
+    "messaging",
+    "security",
+]
+
+unobserved_domains = [
+    d for d in candidate_domains
+    if d not in observed_domains
+]
+
+awareness_text = f"""
+I know {len(known_organs)} organs.
+
+I know {len(capabilities)} habitat capabilities.
+
+I know {len(objects)} habitat objects.
+
+I know {truth_state.get("truth_records_count",0)} validated truths.
+
+My strongest truth is:
+{truth_id}
+
+My observed capabilities are:
+{", ".join(capabilities)}
+
+My observed knowledge domains are:
+{", ".join(observed_domains)}
+
+My currently unobserved domains are:
+{", ".join(unobserved_domains)}
+
+My lifecycle is:
+{self_model.get("lifecycle")}
+""".strip()
+
+record = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "knowledge",
+    "awareness_type": "knowledge_awareness",
+    "status": "AWARE",
+    "known_organ_count": len(known_organs),
+    "known_capability_count": len(capabilities),
+    "known_habitat_object_count": len(objects),
+    "known_truth_count": truth_state.get("truth_records_count",0),
+    "strongest_truth": truth_id,
+    "observed_domains": observed_domains,
+    "unobserved_domains": unobserved_domains,
+    "awareness_text": awareness_text
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record_file = ROOT / "knowledge" / "awareness" / f"knowledge-awareness-{stamp}.json"
+latest_file = ROOT / "knowledge" / "state" / "knowledge-awareness-latest.json"
+journal_file = ROOT / "knowledge" / "journal" / f"knowledge-awareness-run-{stamp}.json"
+
+record_file.write_text(json.dumps(record, indent=2) + "\n")
+latest_file.write_text(json.dumps(record, indent=2) + "\n")
+
+journal_file.write_text(json.dumps({
+    "timestamp": record["timestamp"],
+    "status": "OK",
+    "record_file": str(record_file),
+    "latest_file": str(latest_file)
+}, indent=2) + "\n")
+
+print("===== KNOWLEDGE AWARENESS =====")
+print(awareness_text)
+print()
+print("===== FILES =====")
+print(f"record_file={record_file}")
+print(f"latest_file={latest_file}")

@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-06-10T18:00:33.328966+02:00",
+  "organ": "self",
+  "consistency_type": "self_consistency",
+  "lifecycle": "OBSERVE",
+  "status": "CONSISTENT",
+  "checks": [
+    {
+      "check_id": "individual_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-model and reflection agree on individual"
+    },
+    {
+      "check_id": "lifecycle_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-model and reflection agree on OBSERVE lifecycle"
+    },
+    {
+      "check_id": "organ_inventory_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-model organ inventory matches observed filesystem organs"
+    },
+    {
+      "check_id": "capability_count_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "capability counts match across graph, self-model and reflection"
+    },
+    {
+      "check_id": "truth_count_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "truth record counts match across truth-state, records, self-model and reflection"
+    },
+    {
+      "check_id": "strongest_truth_consistency",
+      "status": "PASS",
+      "severity": "info",
+      "message": "self-model and reflection agree on strongest truth"
+    },
+    {
+      "check_id": "immature_organ_observation",
+      "status": "WARN",
+      "severity": "medium",
+      "message": "immature organs observed: ['hypothesis']"
+    }
+  ],
+  "contradictions": [],
+  "warnings": [
+    "immature organs observed: ['hypothesis']"
+  ],
+  "summary": {
+    "filesystem_organ_count": 12,
+    "self_model_organ_count": 12,
+    "capability_count": 3,
+    "truth_records_count": 2,
+    "strongest_truth_id": "name_resolution_requires_authoritative_namespace_truth"
+  }
+}

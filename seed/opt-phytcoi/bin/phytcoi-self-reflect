@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+SELF = ROOT / "self"
+MODEL_FILE = SELF / "state" / "self-model.json"
+REFLECTIONS = SELF / "reflections"
+JOURNAL = SELF / "journal"
+STATE = SELF / "state"
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+    model = read_json(MODEL_FILE)
+
+    organs = model.get("known_organs", [])
+    cognition = model.get("cognition", {})
+    graph = cognition.get("capability_graph", {})
+    truth = cognition.get("truth", {})
+
+    organ_ids = [o.get("organ_id") for o in organs]
+    immature = [
+        o.get("organ_id")
+        for o in organs
+        if o.get("confidence") != "high" or not o.get("descriptor_present")
+    ]
+
+    lines = []
+    lines.append(f"I am {model.get('individual')}, a {model.get('species')} phytomorphic cognitive organism.")
+    lines.append(f"I live in {model.get('nest')} and my current lifecycle is {model.get('lifecycle')}.")
+    lines.append(model.get("self_statement", ""))
+    lines.append(model.get("boundary_statement", ""))
+    lines.append("")
+    lines.append(f"I currently observe {len(organs)} organs: {', '.join(organ_ids)}.")
+    lines.append(f"My current capability graph contains {graph.get('capability_count', 0)} capabilities across {graph.get('object_count', 0)} observed habitat objects.")
+    lines.append(f"My observed capabilities are: {', '.join(graph.get('capabilities', []))}.")
+    lines.append(f"My strongest validated truth is: {truth.get('last_truth_id')}.")
+    lines.append(f"My truth confidence is {truth.get('confidence')}.")
+    lines.append("")
+    lines.append("I am forbidden to plan, decide, execute, approve or modify the habitat until my cognition matures.")
+    lines.append("I must remain audit-first, capability-first, function-first and evidence-first.")
+    lines.append("I must not treat vendors, products, hostnames or local habitat names as truth.")
+
+    if immature:
+        lines.append("")
+        lines.append(f"I also observe immature or incomplete organs requiring future maturation: {', '.join(immature)}.")
+
+    reflection_text = "\n".join([x for x in lines if x is not None])
+
+    reflection = {
+        "timestamp": now,
+        "organ": "self",
+        "reflection_type": "self_reflection",
+        "lifecycle": model.get("lifecycle"),
+        "individual": model.get("individual"),
+        "species": model.get("species"),
+        "nest": model.get("nest"),
+        "known_organ_count": len(organs),
+        "immature_organs": immature,
+        "capability_count": graph.get("capability_count", 0),
+        "truth_records_count": truth.get("truth_records_count", 0),
+        "strongest_truth_id": truth.get("last_truth_id"),
+        "reflection_text": reflection_text
+    }
+
+    REFLECTIONS.mkdir(parents=True, exist_ok=True)
+    JOURNAL.mkdir(parents=True, exist_ok=True)
+    STATE.mkdir(parents=True, exist_ok=True)
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    reflection_file = REFLECTIONS / f"self-reflection-{stamp}.json"
+    latest_file = STATE / "self-reflection-latest.json"
+    journal_file = JOURNAL / f"reflection-run-{stamp}.json"
+
+    reflection_file.write_text(json.dumps(reflection, indent=2) + "\n")
+    latest_file.write_text(json.dumps(reflection, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "self",
+        "status": "OK",
+        "reflection_file": str(reflection_file),
+        "latest_file": str(latest_file),
+        "known_organ_count": len(organs),
+        "immature_organ_count": len(immature)
+    }, indent=2) + "\n")
+
+    print("===== SELF REFLECTION =====")
+    print(reflection_text)
+    print()
+    print("===== REFLECTION FILES =====")
+    print(f"reflection_file={reflection_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

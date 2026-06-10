@@ -1,0 +1,143 @@
+{
+  "timestamp": "2026-06-10T19:19:34.181360+02:00",
+  "organ": "context",
+  "lifecycle": "OBSERVE",
+  "ledger_type": "validation_candidate_ledger",
+  "candidate_count": 4,
+  "candidates": [
+    {
+      "domain": "file_and_directory_services",
+      "ledger_status": "validation_candidate",
+      "current_status": "emerging",
+      "confidence_pct": 100.0,
+      "supporting_capabilities": [
+        "file_or_directory_related_service_provider"
+      ],
+      "matched_capabilities": 1,
+      "expected_capabilities": 1,
+      "readiness_reasons": [
+        "all_expected_capabilities_observed",
+        "confidence_reached_threshold"
+      ],
+      "required_before_validation": [
+        "independent_evidence_recheck",
+        "temporal_stability_observation",
+        "relationship_context_generation",
+        "truth_derivation_candidate",
+        "no_vendor_truth_review",
+        "no_hostname_truth_review"
+      ],
+      "forbidden_outcome": [
+        "automatic_validation",
+        "truth_assertion",
+        "decision",
+        "execution",
+        "habitat_modification"
+      ]
+    },
+    {
+      "domain": "identity_and_authentication",
+      "ledger_status": "validation_candidate",
+      "current_status": "emerging",
+      "confidence_pct": 100.0,
+      "supporting_capabilities": [
+        "authentication_ticket_provider",
+        "directory_catalog_provider",
+        "directory_service_provider"
+      ],
+      "matched_capabilities": 3,
+      "expected_capabilities": 3,
+      "readiness_reasons": [
+        "all_expected_capabilities_observed",
+        "confidence_reached_threshold"
+      ],
+      "required_before_validation": [
+        "independent_evidence_recheck",
+        "temporal_stability_observation",
+        "relationship_context_generation",
+        "truth_derivation_candidate",
+        "no_vendor_truth_review",
+        "no_hostname_truth_review"
+      ],
+      "forbidden_outcome": [
+        "automatic_validation",
+        "truth_assertion",
+        "decision",
+        "execution",
+        "habitat_modification"
+      ]
+    },
+    {
+      "domain": "remote_access",
+      "ledger_status": "validation_candidate",
+      "current_status": "emerging",
+      "confidence_pct": 100.0,
+      "supporting_capabilities": [
+        "remote_interactive_access_provider",
+        "remote_shell_access_provider"
+      ],
+      "matched_capabilities": 2,
+      "expected_capabilities": 2,
+      "readiness_reasons": [
+        "all_expected_capabilities_observed",
+        "confidence_reached_threshold"
+      ],
+      "required_before_validation": [
+        "independent_evidence_recheck",
+        "temporal_stability_observation",
+        "relationship_context_generation",
+        "truth_derivation_candidate",
+        "no_vendor_truth_review",
+        "no_hostname_truth_review"
+      ],
+      "forbidden_outcome": [
+        "automatic_validation",
+        "truth_assertion",
+        "decision",
+        "execution",
+        "habitat_modification"
+      ]
+    },
+    {
+      "domain": "web_services",
+      "ledger_status": "validation_candidate",
+      "current_status": "emerging",
+      "confidence_pct": 100.0,
+      "supporting_capabilities": [
+        "web_surface_provider"
+      ],
+      "matched_capabilities": 1,
+      "expected_capabilities": 1,
+      "readiness_reasons": [
+        "all_expected_capabilities_observed",
+        "confidence_reached_threshold"
+      ],
+      "required_before_validation": [
+        "independent_evidence_recheck",
+        "temporal_stability_observation",
+        "relationship_context_generation",
+        "truth_derivation_candidate",
+        "no_vendor_truth_review",
+        "no_hostname_truth_review"
+      ],
+      "forbidden_outcome": [
+        "automatic_validation",
+        "truth_assertion",
+        "decision",
+        "execution",
+        "habitat_modification"
+      ]
+    }
+  ],
+  "principles": [
+    "candidate_not_validated",
+    "validation_requires_recheck",
+    "confidence_not_truth",
+    "observe_only",
+    "no_auto_validation",
+    "no_decision_engine",
+    "no_executor",
+    "no_vendor_truth",
+    "no_hostname_truth"
+  ]
+}

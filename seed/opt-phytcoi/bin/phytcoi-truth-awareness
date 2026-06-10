@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+
+import json
+from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+
+truth_records = sorted((ROOT/"truth/records").glob("*.json"))
+knowledge_awareness = json.loads(
+    (ROOT/"knowledge/state/knowledge-awareness-latest.json").read_text()
+)
+
+truths = defaultdict(list)
+
+for record_file in truth_records:
+    data = json.loads(record_file.read_text())
+    truths[data.get("truth_id")].append(data)
+
+unique_truths = []
+
+for truth_id, records in truths.items():
+    unique_truths.append({
+        "truth_id": truth_id,
+        "record_count": len(records),
+        "confidence": records[-1].get("confidence"),
+        "truth_type": records[-1].get("truth_type"),
+        "statement": records[-1].get("statement"),
+        "portable_statement": records[-1].get("portable_statement")
+    })
+
+unique_truths = sorted(
+    unique_truths,
+    key=lambda x: x["record_count"],
+    reverse=True
+)
+
+strongest_truth = unique_truths[0]["truth_id"] if unique_truths else None
+
+observed_domains = knowledge_awareness.get("observed_domains", [])
+
+truth_domains = []
+
+if strongest_truth and "name_resolution" in strongest_truth:
+    truth_domains.append("name_resolution")
+
+candidate_truth_domains = [
+    "identity",
+    "authentication",
+    "storage",
+    "backup",
+    "compute",
+    "security",
+    "scheduling",
+    "messaging"
+]
+
+domains_without_truth = [
+    d for d in candidate_truth_domains
+    if d not in truth_domains
+]
+
+awareness_text = f"""
+I possess {len(truth_records)} truth records.
+
+I possess {len(unique_truths)} unique truths.
+
+My strongest truth is:
+{strongest_truth}
+
+Truth-supported domains:
+{", ".join(truth_domains) if truth_domains else "none"}
+
+Domains without validated truth:
+{", ".join(domains_without_truth)}
+
+Known truths:
+{", ".join(t['truth_id'] for t in unique_truths)}
+""".strip()
+
+record = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "truth",
+    "awareness_type": "truth_awareness",
+    "status": "AWARE",
+    "truth_record_count": len(truth_records),
+    "unique_truth_count": len(unique_truths),
+    "strongest_truth": strongest_truth,
+    "truths": unique_truths,
+    "truth_supported_domains": truth_domains,
+    "domains_without_truth": domains_without_truth,
+    "awareness_text": awareness_text
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record_file = ROOT/"truth/awareness"/f"truth-awareness-{stamp}.json"
+latest_file = ROOT/"truth/state"/"truth-awareness-latest.json"
+journal_file = ROOT/"truth/journal"/f"truth-awareness-run-{stamp}.json"
+
+record_file.write_text(json.dumps(record, indent=2) + "\n")
+latest_file.write_text(json.dumps(record, indent=2) + "\n")
+
+journal_file.write_text(json.dumps({
+    "timestamp": record["timestamp"],
+    "status": "OK",
+    "record_file": str(record_file),
+    "latest_file": str(latest_file)
+}, indent=2) + "\n")
+
+print("===== TRUTH AWARENESS =====")
+print(awareness_text)
+print()
+print("===== FILES =====")
+print(f"record_file={record_file}")
+print(f"latest_file={latest_file}")

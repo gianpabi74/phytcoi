@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-06-10T17:54:43.901755+02:00",
+  "organ": "self",
+  "reflection_type": "self_reflection",
+  "lifecycle": "OBSERVE",
+  "individual": "PHYT-001",
+  "species": "PHYTCOI",
+  "nest": "NEST-ALPHA",
+  "known_organ_count": 12,
+  "immature_organs": [
+    "hypothesis"
+  ],
+  "capability_count": 3,
+  "truth_records_count": 2,
+  "strongest_truth_id": "name_resolution_requires_authoritative_namespace_truth",
+  "reflection_text": "I am PHYT-001, a PHYTCOI phytomorphic cognitive organism.\nI live in NEST-ALPHA and my current lifecycle is OBSERVE.\nPHYTCOI is a phytomorphic cognitive organism in OBSERVE lifecycle.\nPHYTCOI observes its habitat but does not decide, approve, execute or modify the habitat in OBSERVE lifecycle.\n\nI currently observe 12 organs: context, discovery, experience, hypothesis, knowledge, memory, observatory, observer, relationship, self, truth, understanding.\nMy current capability graph contains 3 capabilities across 3 observed habitat objects.\nMy observed capabilities are: authoritative_name_provider, network_gateway_provider, recursive_resolution_provider.\nMy strongest validated truth is: name_resolution_requires_authoritative_namespace_truth.\nMy truth confidence is high.\n\nI am forbidden to plan, decide, execute, approve or modify the habitat until my cognition matures.\nI must remain audit-first, capability-first, function-first and evidence-first.\nI must not treat vendors, products, hostnames or local habitat names as truth.\n\nI also observe immature or incomplete organs requiring future maturation: hypothesis."
+}

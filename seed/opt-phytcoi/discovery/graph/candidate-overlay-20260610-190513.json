@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-06-10T19:05:13.355036+02:00",
+  "organ": "discovery",
+  "lifecycle": "OBSERVE",
+  "overlay_type": "candidate_capability_overlay",
+  "validated_capability_count": 3,
+  "candidate_capability_count": 12,
+  "validated_capabilities": [
+    "authoritative_name_provider",
+    "network_gateway_provider",
+    "recursive_resolution_provider"
+  ],
+  "candidate_capabilities": {
+    "web_surface_provider": {
+      "providers": [
+        "192.168.1.1"
+      ],
+      "status": "candidate",
+      "confidence": "low"
+    },
+    "authentication_ticket_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "medium"
+    },
+    "directory_service_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "medium"
+    },
+    "directory_catalog_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "medium"
+    },
+    "file_or_directory_related_service_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "low"
+    },
+    "remote_interactive_access_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "low"
+    },
+    "remote_shell_access_provider": {
+      "providers": [
+        "192.168.1.251"
+      ],
+      "status": "candidate",
+      "confidence": "low"
+    }
+  },
+  "objects": {
+    "192.168.1.1": [
+      "web_surface_provider"
+    ],
+    "192.168.1.203": [
+      "authentication_ticket_provider",
+      "directory_service_provider",
+      "directory_catalog_provider",
+      "file_or_directory_related_service_provider",
+      "remote_interactive_access_provider"
+    ],
+    "192.168.1.251": [
+      "authentication_ticket_provider",
+      "directory_service_provider",
+      "directory_catalog_provider",
+      "file_or_directory_related_service_provider",
+      "remote_interactive_access_provider",
+      "remote_shell_access_provider"
+    ]
+  }
+}

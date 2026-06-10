@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+import json
+from pathlib import Path
+from datetime import datetime
+
+ROOT = Path("/opt/phytcoi")
+PUB = ROOT / "observatory" / "public"
+STATE = ROOT / "observatory" / "state" / "observatory-state.json"
+
+def load(path, default=None):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return default if default is not None else {}
+
+def count(path, pattern="*.json"):
+    p = Path(path)
+    return len(list(p.rglob(pattern))) if p.exists() else 0
+
+def stage_from_knowledge(k):
+    if k >= 100:
+        return 4, "Mature", 100, None
+    if k >= 20:
+        return 3, "Adolescent", min(100, int((k - 20) / 80 * 100)), "Mature"
+    if k >= 5:
+        return 2, "Juvenile", min(100, int((k - 5) / 15 * 100)), "Adolescent"
+    return 1, "Seedling", min(100, int(k / 5 * 100)), "Juvenile"
+
+def brain_svg(stage):
+    folds = {1: 5, 2: 8, 3: 12, 4: 18}[stage]
+    lines = []
+    for i in range(folds):
+        x = 115 + (i * 18) % 230
+        y = 115 + ((i * 31) % 120)
+        lines.append(f"<path d='M{x} {y} C{x+30} {y-35}, {x+70} {y+35}, {x+105} {y}'/>")
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#06120d"/>
+<g fill="none" stroke="#27f58a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)">
+<path d="M105 280 C55 205,100 105,205 95 C285 35,405 80,420 180 C485 245,420 365,315 350 C235 405,115 360,105 280Z"/>
+<path d="M180 350 C165 390,145 420,120 445"/>
+<path d="M250 350 C245 395,235 425,220 455"/>
+<path d="M330 340 C345 385,365 415,395 445"/>
+{''.join(lines)}
+</g>
+<text x="256" y="410" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#eafff3">PHYT-001</text>
+<text x="256" y="445" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#27f58a">COGNITIVE PHENOTYPE</text>
+<defs><filter id="g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+</svg>"""
+
+def phyt_svg(stage):
+    size = {1: 0.75, 2: 0.9, 3: 1.05, 4: 1.2}[stage]
+    extra = ""
+    if stage >= 2:
+        extra += "<path d='M260 215 C330 165,385 190,405 245 C350 252,305 250,260 215Z' fill='none'/>"
+    if stage >= 3:
+        extra += "<path d='M240 230 C165 175,110 210,95 270 C165 270,210 260,240 230Z' fill='none'/>"
+    if stage >= 4:
+        extra += "<path d='M310 300 C380 310,420 360,430 430'/><path d='M210 305 C135 320,90 370,75 430'/>"
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#06120d"/>
+<g transform="translate(256 270) scale({size}) translate(-256 -270)" fill="none" stroke="#32f28a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)">
+<path d="M255 375 C220 315,220 230,260 170 C310 230,305 315,255 375Z"/>
+<path d="M260 170 C315 105,375 115,410 170 C350 185,305 190,260 170Z"/>
+<path d="M250 175 C205 105,145 125,105 185 C165 195,210 195,250 175Z"/>
+{extra}
+<path d="M255 375 C235 420,210 445,170 470"/>
+<path d="M255 375 C280 420,315 445,365 470"/>
+<path d="M255 375 C255 420,250 450,245 480"/>
+<path d="M335 150 C395 90,420 55,405 35"/>
+<path d="M130 190 C85 160,60 130,50 95"/>
+<circle cx="255" cy="200" r="10" fill="#32f28a"/>
+</g>
+<text x="256" y="420" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#eafff3">PHIT-001</text>
+<text x="256" y="455" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#32f28a">PHIT PHENOTYPE</text>
+<defs><filter id="g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+</svg>"""
+
+identity = load(ROOT / "identity" / "phyt-001.json", {})
+observer = load(ROOT / "observer/state/observer-state.json", {})
+discovery = load(ROOT / "discovery/state/discovery-state.json", {})
+memory = load(ROOT / "memory/state/memory-state.json", {})
+experience = load(ROOT / "experience/state/experience-state.json", {})
+knowledge = load(ROOT / "knowledge/state/knowledge-state.json", {})
+
+experience_count = count(ROOT / "experience/records")
+knowledge_count = count(ROOT / "knowledge/records")
+germ_count = count(ROOT / "runtime/germ")
+
+stage, stage_name, progress, next_stage = stage_from_knowledge(knowledge_count)
+brain_path = PUB / "cognitive-phenotype-current.svg"
+phyt_path = PUB / "phit-phenotype-current.svg"
+PUB.mkdir(parents=True, exist_ok=True)
+brain_path.write_text(brain_svg(stage))
+phyt_path.write_text(phyt_svg(stage))
+
+activity = []
+for organ in ["observer", "discovery", "memory"]:
+    jdir = ROOT / organ / "journal"
+    if jdir.exists():
+        for f in sorted(jdir.glob("*.json"))[-5:]:
+            activity.append({"ts": f.stat().st_mtime, "text": f"{organ.capitalize()} metabolism"})
+activity = sorted(activity, key=lambda x: x["ts"], reverse=True)[:3]
+
+def act_icon(t):
+    return "🧠" if "Memory" in t else ("🌿" if "Discovery" in t else "🟢")
+
+activity_html = "".join(f"<div class='event'><b>{act_icon(a['text'])}</b><span>{a['text']}</span></div>" for a in activity)
+
+life_events = []
+life_dir = ROOT / "life/events"
+if life_dir.exists():
+    for f in life_dir.glob("*.json"):
+        d = load(f, {})
+        life_events.append((d.get("timestamp",""), d.get("title", f.stem)))
+life_html = "".join(f"<div class='life'><i></i><div><b>{title}</b><small>{ts}</small></div></div>" for ts, title in sorted(life_events, reverse=True)[:5])
+
+now = datetime.now().astimezone().isoformat()
+next_text = f"Next Stage: {next_stage} (Knowledge Records ≥ {'5' if stage == 1 else '20' if stage == 2 else '100'})" if next_stage else "Final Stage reached"
+
+html = """<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYT-001 Observatory</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{--bg:#020705;--panel:#06130d;--green:#27f58a;--text:#eafff3;--muted:#9ac7ae;--border:rgba(39,245,138,.24)}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 50% 0%,rgba(39,245,138,.14),transparent 28%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.page{height:100vh;padding:1vh;display:grid;grid-template-rows:10vh 1fr 4vh;gap:1vh}
+.header{border:1px solid var(--border);border-radius:18px;padding:1vh 1.5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(6,19,13,.82)}
+.brand{display:flex;align-items:center;gap:1vw}.logo{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(39,245,138,.1);font-size:32px}
+h1{margin:0;color:var(--green);font-size:clamp(30px,2.5vw,46px);line-height:1}.subtitle{font-weight:800;font-size:clamp(15px,1.2vw,22px)}.badge{text-align:right;color:var(--green);font-weight:900;font-size:clamp(14px,1vw,20px)}.badge small{display:block;color:var(--muted);margin-top:.5vh}
+.grid{min-height:0;display:grid;grid-template-columns:1.15fr .85fr 1.15fr 1fr;grid-template-rows:1fr 1fr;gap:1vw}
+.card{min-height:0;overflow:hidden;border:1px solid var(--border);border-radius:18px;padding:1.8vh 1.4vw;background:linear-gradient(180deg,rgba(10,29,20,.88),rgba(2,7,5,.72));box-shadow:inset 0 0 28px rgba(39,245,138,.035)}
+h2{margin:0 0 1.2vh;color:var(--green);font-size:clamp(16px,1.25vw,25px);text-transform:uppercase}
+.phenotype img{width:100%;height:60%;object-fit:contain;animation:phytPulse 4s ease-in-out infinite}
+@keyframes phytPulse{0%{filter:drop-shadow(0 0 18px rgba(39,245,138,.20))}50%{filter:drop-shadow(0 0 58px rgba(39,245,138,.78))}100%{filter:drop-shadow(0 0 18px rgba(39,245,138,.20))}}
+.stage{font-size:clamp(13px,.95vw,17px);color:var(--muted);margin-top:.5vh}.bar{height:9px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin:.8vh 0}.bar span{display:block;height:100%;background:var(--green);border-radius:999px;width:__PROGRESS__%}.next{font-size:clamp(12px,.85vw,15px);color:var(--text)}
+.identity{font-size:clamp(13px,1vw,19px);line-height:1.35;margin-bottom:2vh}.organ{height:6.2vh;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2vh;padding:0 1.1vw;border-radius:12px;background:rgba(255,255,255,.045);font-size:clamp(14px,1vw,19px)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:1vw;height:42%}.metric{display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035)}.metric b{font-size:clamp(28px,2.2vw,44px);color:var(--green)}.metric span{display:block}
+.evolution{border-top:1px solid rgba(39,245,138,.25);margin-top:1.3vh;padding-top:1.2vh}.steps{display:flex;justify-content:space-between;align-items:center;font-size:clamp(20px,1.9vw,34px);margin-top:1vh}.steps span{opacity:.35}.steps span.active{opacity:1;color:var(--green);filter:drop-shadow(0 0 14px rgba(39,245,138,.7))}
+.event{height:6.5vh;display:flex;align-items:center;gap:1vw;padding:0 1vw;margin-bottom:1.2vh;border-left:4px solid var(--green);border-radius:8px;background:rgba(255,255,255,.045);font-size:clamp(14px,1vw,18px)}
+.life{display:flex;gap:.8vw;margin-bottom:1vh;font-size:clamp(13px,.9vw,17px)}.life i{width:13px;height:13px;border-radius:50%;background:var(--green);box-shadow:0 0 14px rgba(39,245,138,.8);margin-top:.4vh}.life small{display:block;color:var(--muted)}
+.habitat{grid-column:3/5}.habgrid{display:grid;grid-template-columns:1fr 1.2fr;height:calc(100% - 3vh);gap:1vw}.habrow{display:flex;gap:1vw;margin-bottom:1.2vh;font-size:clamp(14px,1vw,18px)}.habrow b{color:var(--green);font-size:26px}.habrow small{display:block;color:var(--muted)}.radar{display:grid;place-items:center;color:var(--green);font-size:clamp(90px,10vw,190px);opacity:.9}
+.footer{display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid rgba(39,245,138,.12);border-radius:12px;background:rgba(6,19,13,.5);font-size:clamp(12px,.85vw,15px)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header"><div class="brand"><div class="logo">🌱</div><div><h1>PHYT-001</h1><div class="subtitle">PHYTCOI Observatory</div></div></div><div class="badge">ALIVE · OBSERVE 🟢<small>__NOW__</small></div></div>
+<div class="grid">
+<div class="card phenotype"><h2>🧠 Cognitive Phenotype</h2><img src="cognitive-phenotype-current.svg"><div class="stage">Stage __STAGE__ · __STAGE_NAME__</div><div class="bar"><span></span></div><div class="next">__NEXT_TEXT__</div><div class="evolution"><b>Brain Evolution</b><div class="steps"><span class="active">🧠</span><span>→</span><span>🧠</span><span>→</span><span>🧠</span><span>→</span><span>🧠</span></div></div></div>
+<div class="card"><h2>⌁ Live State</h2><div class="identity"><div>Species: __SPECIES__</div><div>Individual: PHYT-001</div><div>Nest: NEST-ALPHA</div></div><div class="organ"><span>🟢 Observer</span><b>__OBS__</b></div><div class="organ"><span>🌱 Discovery</span><b>__DISC__</b></div><div class="organ"><span>🧠 Memory</span><b>__MEM__</b></div></div>
+<div class="card phenotype"><h2>🌿 PHIT Phenotype</h2><img src="phit-phenotype-current.svg"><div class="stage">Stage __STAGE__ · __STAGE_NAME__</div><div class="bar"><span></span></div><div class="next">__NEXT_TEXT__</div></div>
+<div class="card"><h2>✹ Cognition</h2><div class="metrics"><div class="metric"><div><b>__EXP__</b><span>Experience</span></div></div><div class="metric"><div><b>__KNOW__</b><span>Knowledge</span></div></div><div class="metric"><div><b>__CONF__</b><span>Confidence</span></div></div><div class="metric"><div><b>__KRUN__</b><span>Know Runs</span></div></div></div><div class="evolution"><b>Evolution Progress</b><div class="steps"><span class="active">🌱</span><span>→</span><span>🌿</span><span>→</span><span>🌳</span><span>→</span><span>👑</span></div></div></div>
+<div class="card"><h2>⌁ Recent Activity</h2>__ACTIVITY__</div>
+<div class="card"><h2>◷ Life Timeline</h2>__LIFE__</div>
+<div class="card habitat"><h2>🌱 Habitat Understanding</h2><div class="habgrid"><div><div class="habrow"><b>◎</b><div>Network Provider<small>1 candidate</small></div></div><div class="habrow"><b>▣</b><div>Resolution Providers<small>2 candidates</small></div></div><div class="habrow"><b>✹</b><div>Germ Structures<small>__GERM__</small></div></div><div class="habrow"><b>▶</b><div>Execution<small>disabled</small></div></div><div class="habrow"><b>🔒</b><div>Habitat Modification<small>forbidden</small></div></div></div><div class="radar">◌</div></div></div>
+</div>
+<div class="footer">Generated from PHYTCOI state · __NOW__</div>
+</div>
+</body>
+</html>"""
+
+replacements = {
+"__PROGRESS__": str(progress),
+"__NOW__": now,
+"__STAGE__": str(stage),
+"__STAGE_NAME__": stage_name,
+"__NEXT_TEXT__": next_text,
+"__SPECIES__": identity.get("species","PHYTCOI"),
+"__OBS__": str(observer.get("run_count",0)),
+"__DISC__": str(discovery.get("run_count",0)),
+"__MEM__": str(memory.get("run_count",0)),
+"__EXP__": str(experience_count),
+"__KNOW__": str(knowledge_count),
+"__CONF__": str(knowledge.get("confidence","-")).upper(),
+"__KRUN__": str(knowledge.get("run_count",0)),
+"__ACTIVITY__": activity_html,
+"__LIFE__": life_html,
+"__GERM__": str(germ_count)
+}
+for k,v in replacements.items():
+    html = html.replace(k, v)
+
+(PUB / "index.html").write_text(html)
+
+state = load(STATE, {})
+state["last_render"] = now
+state["render_count"] = state.get("render_count", 0) + 1
+state["ui_version"] = "observatory_v4_dual_evolving_phenotype"
+state["phenotype_stage"] = stage_name
+state["phenotype_progress_pct"] = progress
+STATE.write_text(json.dumps(state, indent=2) + "\n")

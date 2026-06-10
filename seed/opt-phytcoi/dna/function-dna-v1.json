@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-06-09T15:03:42+02:00",
+  "observer": "PHYT-001",
+  "type": "function_based_habitat_dna",
+  "validated_habitat_functions": {
+    "network_gateway": {
+      "provider": "192.168.1.1",
+      "evidence": "function-discovery-20260609-150342.json",
+      "confidence": 0.90
+    },
+    "name_resolution": {
+      "providers": "192.168.1.251,192.168.1.203",
+      "search_domain": "biondra.lan",
+      "evidence": "function-discovery-20260609-150342.json",
+      "confidence": 0.85
+    }
+  }
+}

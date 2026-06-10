@@ -7,7 +7,8 @@
   "purpose": "derive situational meaning from validated relationships",
   "inputs": [
     "relationship_records",
-    "experience_state"
+    "experience_state",
+    "habitat_relationship_records"
   ],
   "outputs": [
     "context_records",
@@ -17,7 +18,8 @@
     "read_relationships",
     "read_experience",
     "derive_context",
-    "persist_context"
+    "persist_context",
+    "derive_habitat_context"
   ],
   "forbidden_actions": [
     "decision",

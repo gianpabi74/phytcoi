@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+DOMAINS = json.loads(
+    (ROOT / "context/state/domain-awareness-latest.json").read_text()
+)
+
+EXPECTED = {
+    "name_resolution": 2,
+    "network_access": 1,
+    "identity_and_authentication": 3,
+    "remote_access": 2,
+    "web_services": 1,
+    "file_and_directory_services": 1
+}
+
+results = []
+
+for d in DOMAINS.get("validated_domains", []):
+    results.append({
+        "domain": d["domain"],
+        "status": "validated",
+        "confidence_pct": 100,
+        "matched_capabilities": len(d.get("supporting_capabilities", [])),
+        "expected_capabilities": EXPECTED.get(d["domain"], 1)
+    })
+
+for d in DOMAINS.get("emerging_domains", []):
+    matched = len(d.get("supporting_capabilities", []))
+    expected = EXPECTED.get(d["domain"], max(1, matched))
+    confidence = round((matched / expected) * 100, 2)
+
+    results.append({
+        "domain": d["domain"],
+        "status": "emerging",
+        "confidence_pct": confidence,
+        "matched_capabilities": matched,
+        "expected_capabilities": expected
+    })
+
+results = sorted(
+    results,
+    key=lambda x: (-x["confidence_pct"], x["domain"])
+)
+
+payload = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "context",
+    "lifecycle": "OBSERVE",
+    "confidence_type": "domain_confidence",
+    "domain_count": len(results),
+    "domains": results,
+    "principles": [
+        "confidence_not_truth",
+        "capability_based_confidence",
+        "evidence_first",
+        "observe_only",
+        "no_vendor_truth",
+        "no_hostname_truth"
+    ]
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record = ROOT / "context/confidence" / f"domain-confidence-{stamp}.json"
+latest = ROOT / "context/state/domain-confidence-latest.json"
+
+record.write_text(json.dumps(payload, indent=2) + "\n")
+latest.write_text(json.dumps(payload, indent=2) + "\n")
+
+print("===== DOMAIN CONFIDENCE =====")
+print()
+
+for d in results:
+    print(
+        f'{d["domain"]} -> '
+        f'{d["confidence_pct"]}% '
+        f'({d["matched_capabilities"]}/{d["expected_capabilities"]}) '
+        f'[{d["status"]}]'
+    )
+
+print()
+print("record_file =", record)
+print("latest_file =", latest)

@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-06-10T17:21:31.702940+02:00",
+  "organ": "discovery",
+  "lifecycle": "OBSERVE",
+  "graph_type": "capability_graph",
+  "source": "capability-candidates-20260610-172131.json",
+  "capability_count": 3,
+  "object_count": 3,
+  "capabilities": {
+    "authoritative_name_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "provider_count": 2,
+      "max_confidence": "high",
+      "evidence": [
+        "authoritative_response_observed",
+        "ns_record_present",
+        "soa_record_present"
+      ]
+    },
+    "network_gateway_provider": {
+      "providers": [
+        "192.168.1.1"
+      ],
+      "provider_count": 1,
+      "max_confidence": "high",
+      "evidence": [
+        "default_route_present"
+      ]
+    },
+    "recursive_resolution_provider": {
+      "providers": [
+        "192.168.1.203",
+        "192.168.1.251"
+      ],
+      "provider_count": 2,
+      "max_confidence": "medium",
+      "evidence": [
+        "resolver_present_in_resolv_conf"
+      ]
+    }
+  },
+  "objects": {
+    "192.168.1.1": {
+      "capabilities": [
+        {
+          "capability": "network_gateway_provider",
+          "confidence": "high",
+          "evidence": [
+            "default_route_present"
+          ]
+        }
+      ]
+    },
+    "192.168.1.203": {
+      "capabilities": [
+        {
+          "capability": "recursive_resolution_provider",
+          "confidence": "medium",
+          "evidence": [
+            "resolver_present_in_resolv_conf"
+          ]
+        },
+        {
+          "capability": "authoritative_name_provider",
+          "confidence": "high",
+          "evidence": [
+            "soa_record_present",
+            "ns_record_present",
+            "authoritative_response_observed"
+          ]
+        }
+      ]
+    },
+    "192.168.1.251": {
+      "capabilities": [
+        {
+          "capability": "recursive_resolution_provider",
+          "confidence": "medium",
+          "evidence": [
+            "resolver_present_in_resolv_conf"
+          ]
+        },
+        {
+          "capability": "authoritative_name_provider",
+          "confidence": "high",
+          "evidence": [
+            "soa_record_present",
+            "ns_record_present",
+            "authoritative_response_observed"
+          ]
+        }
+      ]
+    }
+  },
+  "principles": [
+    "capability_first",
+    "object_second",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_local_logic",
+    "observe_only"
+  ]
+}

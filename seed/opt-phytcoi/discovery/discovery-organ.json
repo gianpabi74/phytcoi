@@ -13,19 +13,26 @@
   ],
   "outputs": [
     "function_candidates",
+    "capability_candidates",
+    "capability_graph",
     "classification_candidates",
     "germ_proposals"
   ],
   "allowed_actions": [
     "observe",
     "classify_by_function",
-    "propose_germ"
+    "propose_germ",
+    "observe_capabilities",
+    "build_capability_graph"
   ],
   "forbidden_actions": [
     "execute",
     "modify_habitat",
     "restart_services",
     "change_configuration",
-    "hardcode_product_identity"
+    "hardcode_product_identity",
+    "classify_by_hostname",
+    "classify_by_vendor",
+    "classify_by_product_name"
   ]
 }

@@ -1,13 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="48" fill="#07130d"/>
-  <circle cx="256" cy="270" r="145" fill="none" stroke="#1f6f4a" stroke-width="3"/>
-  <path d="M256 350 C230 300 220 240 256 190 C292 240 282 300 256 350Z" fill="#39d98a"/>
-  <path d="M256 190 C220 160 190 130 170 90" fill="none" stroke="#39d98a" stroke-width="10" stroke-linecap="round"/>
-  <path d="M256 190 C292 160 322 130 342 90" fill="none" stroke="#39d98a" stroke-width="10" stroke-linecap="round"/>
-  <path d="M210 330 C230 290 282 290 302 330" fill="none" stroke="#55f0c2" stroke-width="6"/>
-  <path d="M205 360 C240 330 272 330 307 360" fill="none" stroke="#55f0c2" stroke-width="6"/>
-  <circle cx="170" cy="90" r="12" fill="#55f0c2"/>
-  <circle cx="342" cy="90" r="12" fill="#55f0c2"/>
-  <text x="256" y="420" text-anchor="middle" font-family="Arial" font-size="34" fill="#e8fff4">PHYT-001</text>
-  <text x="256" y="452" text-anchor="middle" font-family="Arial" font-size="18" fill="#9be7c0">OBSERVE · O:5 D:5 M:4</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="16" fill="#020b07"/>
+  <circle cx="32" cy="32" r="25" fill="#06180f" stroke="#3dff88" stroke-width="2"/>
+  <path d="M32 49 C31 39 31 30 32 20" fill="none" stroke="#3dff88" stroke-width="5" stroke-linecap="round"/>
+  <path d="M31 25 C18 23 14 14 13 9 C23 9 30 14 31 25Z" fill="#3dff88"/>
+  <path d="M35 25 C43 16 52 15 57 17 C52 26 43 30 35 25Z" fill="#7dffad"/>
+  <circle cx="32" cy="49" r="3" fill="#7dffad"/>
 </svg>

@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+READINESS = json.loads(
+    (ROOT / "context/state/promotion-readiness-latest.json").read_text()
+)
+
+DOMAIN_CONFIDENCE = json.loads(
+    (ROOT / "context/state/domain-confidence-latest.json").read_text()
+)
+
+DOMAIN_AWARENESS = json.loads(
+    (ROOT / "context/state/domain-awareness-latest.json").read_text()
+)
+
+confidence_by_domain = {
+    d["domain"]: d
+    for d in DOMAIN_CONFIDENCE.get("domains", [])
+}
+
+awareness_by_domain = {}
+
+for d in DOMAIN_AWARENESS.get("validated_domains", []):
+    awareness_by_domain[d["domain"]] = d
+
+for d in DOMAIN_AWARENESS.get("emerging_domains", []):
+    awareness_by_domain[d["domain"]] = d
+
+candidates = []
+
+for d in READINESS.get("domains", []):
+    if d.get("promotion_readiness") != "candidate":
+        continue
+
+    domain = d["domain"]
+    confidence = confidence_by_domain.get(domain, {})
+    awareness = awareness_by_domain.get(domain, {})
+
+    candidates.append({
+        "domain": domain,
+        "ledger_status": "validation_candidate",
+        "current_status": d.get("status"),
+        "confidence_pct": d.get("confidence_pct"),
+        "supporting_capabilities": awareness.get("supporting_capabilities", []),
+        "matched_capabilities": confidence.get("matched_capabilities"),
+        "expected_capabilities": confidence.get("expected_capabilities"),
+        "readiness_reasons": d.get("reasons", []),
+        "required_before_validation": [
+            "independent_evidence_recheck",
+            "temporal_stability_observation",
+            "relationship_context_generation",
+            "truth_derivation_candidate",
+            "no_vendor_truth_review",
+            "no_hostname_truth_review"
+        ],
+        "forbidden_outcome": [
+            "automatic_validation",
+            "truth_assertion",
+            "decision",
+            "execution",
+            "habitat_modification"
+        ]
+    })
+
+payload = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "context",
+    "lifecycle": "OBSERVE",
+    "ledger_type": "validation_candidate_ledger",
+    "candidate_count": len(candidates),
+    "candidates": candidates,
+    "principles": [
+        "candidate_not_validated",
+        "validation_requires_recheck",
+        "confidence_not_truth",
+        "observe_only",
+        "no_auto_validation",
+        "no_decision_engine",
+        "no_executor",
+        "no_vendor_truth",
+        "no_hostname_truth"
+    ]
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record = ROOT / "context/validation_candidates" / f"validation-candidate-ledger-{stamp}.json"
+latest = ROOT / "context/state/validation-candidate-ledger-latest.json"
+journal = ROOT / "context/journal" / f"validation-candidate-ledger-run-{stamp}.json"
+
+record.write_text(json.dumps(payload, indent=2) + "\n")
+latest.write_text(json.dumps(payload, indent=2) + "\n")
+journal.write_text(json.dumps({
+    "timestamp": payload["timestamp"],
+    "organ": "context",
+    "status": "OK",
+    "record_file": str(record),
+    "latest_file": str(latest),
+    "candidate_count": len(candidates)
+}, indent=2) + "\n")
+
+print("===== VALIDATION CANDIDATE LEDGER =====")
+print()
+print("candidate_count =", len(candidates))
+print()
+
+for c in candidates:
+    print(f'{c["domain"]} -> {c["ledger_status"]} confidence={c["confidence_pct"]}%')
+    print("  supporting_capabilities =", ", ".join(c["supporting_capabilities"]))
+    print("  required_before_validation =", ", ".join(c["required_before_validation"]))
+    print()
+
+print("record_file =", record)
+print("latest_file =", latest)

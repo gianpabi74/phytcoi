@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+import json
+import socket
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+GRAPH = ROOT / "discovery" / "graph" / "capability-graph-latest.json"
+
+OUT_DIR = ROOT / "evidence" / "habitat" / "tcp_service_observation"
+STATE_DIR = ROOT / "evidence" / "habitat" / "state"
+JOURNAL_DIR = ROOT / "evidence" / "habitat" / "journal"
+
+PORTS = [
+    22, 53, 80, 88, 135, 139, 389, 443, 445,
+    464, 636, 3268, 3269, 3389, 8006, 8007, 8088
+]
+
+PORT_HINTS = {
+    22: "remote_shell_surface",
+    53: "name_resolution_surface",
+    80: "http_surface",
+    88: "authentication_ticket_surface",
+    135: "rpc_surface",
+    139: "netbios_surface",
+    389: "directory_surface",
+    443: "https_surface",
+    445: "file_or_directory_related_surface",
+    464: "credential_change_surface",
+    636: "secure_directory_surface",
+    3268: "global_catalog_surface",
+    3269: "secure_global_catalog_surface",
+    3389: "remote_desktop_surface",
+    8006: "management_ui_surface",
+    8007: "management_ui_surface",
+    8088: "observatory_surface"
+}
+
+def read_json(path, default=None):
+    try:
+        if path.exists():
+            return json.loads(path.read_text())
+    except Exception:
+        pass
+    return default if default is not None else {}
+
+def tcp_probe(host, port, timeout=0.55):
+    result = {
+        "port": port,
+        "standard_port_hint": PORT_HINTS.get(port, "unknown_surface"),
+        "open": False,
+        "evidence": [],
+        "error": None
+    }
+
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            result["open"] = True
+            result["evidence"].append("tcp_connect_succeeded")
+    except socket.timeout:
+        result["error"] = "timeout"
+        result["evidence"].append("tcp_connect_timeout")
+    except ConnectionRefusedError:
+        result["error"] = "connection_refused"
+        result["evidence"].append("tcp_connection_refused")
+    except OSError as e:
+        result["error"] = e.__class__.__name__
+        result["evidence"].append("tcp_connect_failed")
+
+    return result
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+    graph = read_json(GRAPH, {})
+    objects = sorted(graph.get("objects", {}).keys())
+
+    observations = []
+
+    for obj in objects:
+        port_results = []
+        open_ports = []
+
+        for port in PORTS:
+            r = tcp_probe(obj, port)
+            port_results.append(r)
+            if r["open"]:
+                open_ports.append(port)
+
+        observations.append({
+            "object": obj,
+            "observation_type": "tcp_service_surface",
+            "open_ports": open_ports,
+            "open_port_count": len(open_ports),
+            "ports": port_results,
+            "forbidden_interpretations": [
+                "vendor_truth",
+                "product_truth",
+                "hostname_truth",
+                "capability_promotion_without_later_validation"
+            ]
+        })
+
+    record = {
+        "timestamp": now,
+        "organ": "evidence",
+        "lifecycle": "OBSERVE",
+        "evidence_type": "tcp_service_observation",
+        "status": "OBSERVED",
+        "source": "discovery/graph/capability-graph-latest.json",
+        "object_count": len(objects),
+        "port_count": len(PORTS),
+        "observations": observations,
+        "principles": [
+            "evidence_first",
+            "observe_only",
+            "no_vendor_truth",
+            "no_product_truth",
+            "no_hostname_truth",
+            "no_capability_promotion_in_m24_1"
+        ]
+    }
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    JOURNAL_DIR.mkdir(parents=True, exist_ok=True)
+
+    record_file = OUT_DIR / f"tcp-service-observation-{stamp}.json"
+    latest_file = STATE_DIR / "tcp-service-observation-latest.json"
+    journal_file = JOURNAL_DIR / f"tcp-service-observation-run-{stamp}.json"
+
+    record_file.write_text(json.dumps(record, indent=2) + "\n")
+    latest_file.write_text(json.dumps(record, indent=2) + "\n")
+
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "evidence",
+        "status": "OK",
+        "record_file": str(record_file),
+        "latest_file": str(latest_file),
+        "object_count": len(objects),
+        "port_count": len(PORTS)
+    }, indent=2) + "\n")
+
+    print("===== TCP SERVICE EVIDENCE =====")
+    print(f"objects={len(objects)}")
+    print(f"ports_per_object={len(PORTS)}")
+    for obs in observations:
+        print(f"{obs['object']} open_ports={obs['open_ports']}")
+    print()
+    print("===== FILES =====")
+    print(f"record_file={record_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

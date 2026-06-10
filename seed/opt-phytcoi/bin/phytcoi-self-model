@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+import json
+import os
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+SELF = ROOT / "self"
+STATE = SELF / "state"
+RECORDS = SELF / "records"
+JOURNAL = SELF / "journal"
+
+CORE_ORGAN_MARKERS = {
+    "observer", "discovery", "memory", "experience", "knowledge",
+    "understanding", "relationship", "context", "truth", "self"
+}
+
+NON_ORGAN_DIRS = {
+    "bin", "logs", "runtime", "state", "audit_backups"
+}
+
+def read_json(path, default=None):
+    try:
+        if path.exists():
+            return json.loads(path.read_text())
+    except Exception:
+        pass
+    return default
+
+def observed_organs():
+    organs = []
+    for p in sorted(ROOT.iterdir()):
+        if not p.is_dir():
+            continue
+
+        name = p.name
+
+        has_organ_descriptor = any(p.glob("*-organ.json"))
+        has_state = (p / "state").is_dir()
+        has_records = (p / "records").is_dir()
+        has_journal = (p / "journal").is_dir()
+        is_known_core = name in CORE_ORGAN_MARKERS
+
+        if name in NON_ORGAN_DIRS:
+            continue
+
+        if has_organ_descriptor or is_known_core or (has_state and has_journal):
+            organs.append({
+                "organ_id": name,
+                "path": str(p),
+                "descriptor_present": has_organ_descriptor,
+                "state_present": has_state,
+                "records_present": has_records,
+                "journal_present": has_journal,
+                "confidence": "high" if has_organ_descriptor or is_known_core else "medium"
+            })
+
+    return organs
+
+def capability_summary():
+    graph = read_json(ROOT / "discovery" / "graph" / "capability-graph-latest.json", {})
+    return {
+        "capability_count": graph.get("capability_count", len(graph.get("capabilities", {}))),
+        "object_count": graph.get("object_count", len(graph.get("objects", {}))),
+        "capabilities": sorted(list(graph.get("capabilities", {}).keys()))
+    }
+
+def truth_summary():
+    truth_state = read_json(ROOT / "truth" / "state" / "truth-state.json", {})
+    records = sorted((ROOT / "truth" / "records").glob("*.json")) if (ROOT / "truth" / "records").exists() else []
+    latest_record = read_json(records[-1], {}) if records else {}
+
+    return {
+        "truth_records_count": truth_state.get("truth_records_count", len(records)),
+        "last_truth_type": truth_state.get("last_truth_type", latest_record.get("truth_type")),
+        "last_truth_id": latest_record.get("truth_id"),
+        "confidence": truth_state.get("confidence", latest_record.get("confidence"))
+    }
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+
+    organs = observed_organs()
+    capabilities = capability_summary()
+    truths = truth_summary()
+
+    model = {
+        "species": "PHYTCOI",
+        "individual": "PHYT-001",
+        "nest": "NEST-ALPHA",
+        "lifecycle": "OBSERVE",
+        "organ": "self",
+        "status": "ALIVE",
+        "generated_at": now,
+        "body_stage": "PHYTCOI_STAGE1",
+        "brain_stage": "PHYTCOI_BRAIN_STAGE1",
+        "self_statement": "PHYTCOI is a phytomorphic cognitive organism in OBSERVE lifecycle.",
+        "boundary_statement": "PHYTCOI observes its habitat but does not decide, approve, execute or modify the habitat in OBSERVE lifecycle.",
+        "known_organs": organs,
+        "cognition": {
+            "capability_graph": capabilities,
+            "truth": truths
+        },
+        "forbidden_until_mature": [
+            "planner",
+            "decision_engine",
+            "executor",
+            "fix_and_apply",
+            "habitat_modification"
+        ],
+        "principles": [
+            "audit_first",
+            "capability_first",
+            "function_first",
+            "evidence_first",
+            "no_vendor_truth",
+            "no_hostname_truth",
+            "no_product_truth",
+            "observe_only"
+        ]
+    }
+
+    STATE.mkdir(parents=True, exist_ok=True)
+    RECORDS.mkdir(parents=True, exist_ok=True)
+    JOURNAL.mkdir(parents=True, exist_ok=True)
+
+    state_file = STATE / "self-model.json"
+    record_file = RECORDS / ("self-record-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".json")
+    journal_file = JOURNAL / ("run-" + datetime.now().strftime("%Y%m%d-%H%M%S") + ".json")
+
+    state_file.write_text(json.dumps(model, indent=2) + "\n")
+    record_file.write_text(json.dumps(model, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "self",
+        "lifecycle": "OBSERVE",
+        "status": "OK",
+        "state_file": str(state_file),
+        "record_file": str(record_file),
+        "known_organ_count": len(organs),
+        "capability_count": capabilities["capability_count"],
+        "truth_records_count": truths["truth_records_count"]
+    }, indent=2) + "\n")
+
+    print("===== SELF MODEL CREATED =====")
+    print(f"state_file={state_file}")
+    print(f"record_file={record_file}")
+    print(f"known_organ_count={len(organs)}")
+    print(f"capability_count={capabilities['capability_count']}")
+    print(f"truth_records_count={truths['truth_records_count']}")
+
+if __name__ == "__main__":
+    main()

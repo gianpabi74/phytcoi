@@ -12,10 +12,12 @@
   ],
   "outputs": [
     "evidence",
-    "hypothesis"
+    "hypothesis",
+    "capability_evidence"
   ],
   "managed_germs": [
     "germ_network_gateway_driver",
-    "germ_name_resolution_driver"
+    "germ_name_resolution_driver",
+    "germ_authoritative_name_provider_probe"
   ]
 }

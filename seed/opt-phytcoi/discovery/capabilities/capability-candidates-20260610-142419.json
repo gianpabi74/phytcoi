@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-06-10T14:24:19+02:00",
+  "organ": "discovery",
+  "lifecycle": "OBSERVE",
+  "capability_candidates": [
+    {
+      "object": "192.168.1.1",
+      "candidate_capability": "network_gateway_provider",
+      "confidence": "high",
+      "evidence": [
+        "default_route_present"
+      ],
+      "classification_basis": "observed_default_route_provider",
+      "forbidden_assumptions": [
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity"
+      ]
+    },
+    {
+      "object": "192.168.1.251",
+      "candidate_capability": "recursive_resolution_provider",
+      "confidence": "medium",
+      "evidence": [
+        "resolver_present_in_resolv_conf"
+      ],
+      "classification_basis": "configured_recursive_resolver",
+      "forbidden_assumptions": [
+        "authoritative_name_provider",
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity"
+      ]
+    },
+    {
+      "object": "192.168.1.203",
+      "candidate_capability": "recursive_resolution_provider",
+      "confidence": "medium",
+      "evidence": [
+        "resolver_present_in_resolv_conf"
+      ],
+      "classification_basis": "configured_recursive_resolver",
+      "forbidden_assumptions": [
+        "authoritative_name_provider",
+        "vendor_identity",
+        "product_identity",
+        "hostname_identity"
+      ]
+    }
+  ],
+  "principles": [
+    "capability_observation",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_local_logic",
+    "observe_only"
+  ]
+}

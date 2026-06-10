@@ -3,17 +3,27 @@
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
-  "birth_timestamp": null,
-  "last_run": null,
-  "run_count": 0,
-  "function_candidates_count": 0,
-  "classification_candidates_count": 0,
+  "birth_timestamp": "2026-06-09T17:06:05+02:00",
+  "last_run": "2026-06-10T19:08:37.992727+02:00",
+  "run_count": 61,
+  "function_candidates_count": 183,
+  "classification_candidates_count": 3,
   "germ_proposals_count": 0,
   "principles": [
     "function_first",
     "evidence_first",
     "no_local_logic",
     "no_vendor_truth",
-    "observe_only"
-  ]
+    "observe_only",
+    "capability_observation",
+    "capability_graph"
+  ],
+  "last_classification_run": "2026-06-09T18:59:39.954490+02:00",
+  "last_classification_output": "classification-candidates-20260609-185939.json",
+  "capability_candidates_count": 5,
+  "last_capability_run": "2026-06-10T19:08:37.992738+02:00",
+  "last_capability_output": "capability-candidates-20260610-190837.json",
+  "capability_graph_count": 3,
+  "last_capability_graph": "capability-graph-20260610-190837.json",
+  "last_capability_graph_run": "2026-06-10T19:08:37.992744+02:00"
 }

@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+SELF = ROOT / "self"
+
+FILES = {
+    "identity": ROOT / "identity" / "phyt-001.json",
+    "self_dna": ROOT / "dna" / "self-dna-v1.json",
+    "nest_dna": ROOT / "dna" / "nest-dna-v1.json",
+    "self_model": SELF / "state" / "self-model.json",
+    "self_reflection": SELF / "state" / "self-reflection-latest.json",
+    "self_boundary": SELF / "state" / "self-habitat-boundary-latest.json",
+    "self_consistency": SELF / "state" / "self-consistency-latest.json",
+}
+
+def read_json(path):
+    return json.loads(path.read_text())
+
+def add(checks, check_id, status, message, severity="info"):
+    checks.append({
+        "check_id": check_id,
+        "status": status,
+        "severity": severity,
+        "message": message
+    })
+
+def main():
+    now = datetime.now(timezone.utc).astimezone().isoformat()
+    data = {k: read_json(v) for k, v in FILES.items()}
+
+    checks = []
+    contradictions = []
+    warnings = []
+
+    identity = data["identity"]
+    self_dna = data["self_dna"]
+    nest_dna = data["nest_dna"]
+    model = data["self_model"]
+    reflection = data["self_reflection"]
+    boundary = data["self_boundary"]
+    consistency = data["self_consistency"]
+
+    expected = {
+        "species": identity.get("species"),
+        "individual": identity.get("individual"),
+        "nest": identity.get("nest"),
+        "lifecycle": identity.get("lifecycle"),
+    }
+
+    for field in ["species", "individual", "nest", "lifecycle"]:
+        values = {
+            "identity": identity.get(field),
+            "self_dna": self_dna.get(field),
+            "self_model": model.get(field),
+            "self_reflection": reflection.get(field),
+            "self_boundary": boundary.get(field),
+        }
+        if len(set(values.values())) == 1 and list(values.values())[0] == expected[field]:
+            add(checks, f"{field}_alignment", "PASS", f"{field} aligns across identity, self_dna, model, reflection and boundary")
+        else:
+            msg = f"{field} mismatch: {values}"
+            add(checks, f"{field}_alignment", "FAIL", msg, "critical")
+            contradictions.append(msg)
+
+    if self_dna.get("type") == "self_dna":
+        add(checks, "self_dna_type", "PASS", "self-dna is typed as organism self_dna")
+    else:
+        msg = "self-dna is not typed as self_dna"
+        add(checks, "self_dna_type", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    forbidden_self_dna_fields = ["hostname", "ip", "os", "kernel", "cpu_cores", "memory_mb", "disk_root", "timezone"]
+    leaked = [f for f in forbidden_self_dna_fields if f in self_dna]
+    if not leaked:
+        add(checks, "self_dna_boundary_clean", "PASS", "self-dna contains no nest technical fields")
+    else:
+        msg = f"self-dna still contains nest technical fields: {leaked}"
+        add(checks, "self_dna_boundary_clean", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    if nest_dna.get("type") == "nest_dna" and nest_dna.get("hostname") and nest_dna.get("ip"):
+        add(checks, "nest_dna_presence", "PASS", "nest-dna exists and carries nest technical observation")
+    else:
+        msg = "nest-dna missing required nest technical observation"
+        add(checks, "nest_dna_presence", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    if boundary.get("known_boundary_warnings") == []:
+        add(checks, "boundary_warning_state", "PASS", "self-habitat boundary has no active warnings")
+    else:
+        msg = f"boundary still has warnings: {boundary.get('known_boundary_warnings')}"
+        add(checks, "boundary_warning_state", "FAIL", msg, "medium")
+        contradictions.append(msg)
+
+    if consistency.get("status") == "CONSISTENT" and len(consistency.get("contradictions", [])) == 0:
+        add(checks, "self_consistency_state", "PASS", "self-consistency is consistent with zero contradictions")
+    else:
+        msg = "self-consistency is not clean"
+        add(checks, "self_consistency_state", "FAIL", msg, "high")
+        contradictions.append(msg)
+
+    if consistency.get("warnings"):
+        msg = f"previous self-consistency warnings remain informational: {consistency.get('warnings')}"
+        add(checks, "self_consistency_warning_carryover", "WARN", msg, "medium")
+        warnings.append(msg)
+    else:
+        add(checks, "self_consistency_warning_carryover", "PASS", "no previous self-consistency warnings")
+
+    status = "BOUNDARY_CONSISTENT" if not contradictions else "BOUNDARY_INCONSISTENT"
+
+    report = {
+        "timestamp": now,
+        "organ": "self",
+        "consistency_type": "self_boundary_consistency",
+        "status": status,
+        "checks": checks,
+        "contradictions": contradictions,
+        "warnings": warnings,
+        "summary": {
+            "species": expected["species"],
+            "individual": expected["individual"],
+            "nest": expected["nest"],
+            "lifecycle": expected["lifecycle"],
+            "self_dna_type": self_dna.get("type"),
+            "nest_dna_type": nest_dna.get("type"),
+            "boundary_warning_count": len(boundary.get("known_boundary_warnings", [])),
+            "self_consistency_status": consistency.get("status"),
+            "self_consistency_warning_count": len(consistency.get("warnings", []))
+        }
+    }
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    out_dir = SELF / "boundary_consistency"
+    state_dir = SELF / "state"
+    journal_dir = SELF / "journal"
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    journal_dir.mkdir(parents=True, exist_ok=True)
+
+    report_file = out_dir / f"self-boundary-consistency-{stamp}.json"
+    latest_file = state_dir / "self-boundary-consistency-latest.json"
+    journal_file = journal_dir / f"boundary-consistency-run-{stamp}.json"
+
+    report_file.write_text(json.dumps(report, indent=2) + "\n")
+    latest_file.write_text(json.dumps(report, indent=2) + "\n")
+    journal_file.write_text(json.dumps({
+        "timestamp": now,
+        "organ": "self",
+        "status": status,
+        "report_file": str(report_file),
+        "latest_file": str(latest_file),
+        "contradiction_count": len(contradictions),
+        "warning_count": len(warnings)
+    }, indent=2) + "\n")
+
+    print("===== SELF BOUNDARY CONSISTENCY =====")
+    print(f"status={status}")
+    print(f"contradictions={len(contradictions)}")
+    print(f"warnings={len(warnings)}")
+    print(f"boundary_warning_count={len(boundary.get('known_boundary_warnings', []))}")
+    print(f"self_consistency_status={consistency.get('status')}")
+    print()
+    for check in checks:
+        print(f"{check['status']} {check['check_id']}: {check['message']}")
+    print()
+    print("===== FILES =====")
+    print(f"report_file={report_file}")
+    print(f"latest_file={latest_file}")
+
+if __name__ == "__main__":
+    main()

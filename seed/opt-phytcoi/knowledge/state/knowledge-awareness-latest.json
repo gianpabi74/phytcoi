@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-06-10T18:08:45.837275+02:00",
+  "organ": "knowledge",
+  "awareness_type": "knowledge_awareness",
+  "status": "AWARE",
+  "known_organ_count": 12,
+  "known_capability_count": 3,
+  "known_habitat_object_count": 3,
+  "known_truth_count": 3,
+  "strongest_truth": "name_resolution_requires_authoritative_namespace_truth",
+  "observed_domains": [
+    "name_resolution",
+    "recursive_resolution",
+    "network_access"
+  ],
+  "unobserved_domains": [
+    "storage",
+    "identity",
+    "authentication",
+    "backup",
+    "compute",
+    "scheduling",
+    "messaging",
+    "security"
+  ],
+  "awareness_text": "I know 12 organs.\n\nI know 3 habitat capabilities.\n\nI know 3 habitat objects.\n\nI know 3 validated truths.\n\nMy strongest truth is:\nname_resolution_requires_authoritative_namespace_truth\n\nMy observed capabilities are:\nauthoritative_name_provider, network_gateway_provider, recursive_resolution_provider\n\nMy observed knowledge domains are:\nname_resolution, recursive_resolution, network_access\n\nMy currently unobserved domains are:\nstorage, identity, authentication, backup, compute, scheduling, messaging, security\n\nMy lifecycle is:\nOBSERVE"
+}

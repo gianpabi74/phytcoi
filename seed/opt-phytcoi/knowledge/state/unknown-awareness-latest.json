@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-06-10T18:12:18.536892+02:00",
+  "organ": "knowledge",
+  "awareness_type": "unknown_awareness",
+  "status": "AWARE",
+  "known_domains": [
+    "name_resolution",
+    "network_access",
+    "recursive_resolution"
+  ],
+  "unknown_domains": [
+    "authentication",
+    "backup",
+    "compute",
+    "identity",
+    "messaging",
+    "scheduling",
+    "security",
+    "storage"
+  ],
+  "known_domain_count": 3,
+  "unknown_domain_count": 8,
+  "knowledge_coverage_percent": 27.27,
+  "strongest_known_domain": "name_resolution",
+  "awareness_text": "Known domains:\nname_resolution, network_access, recursive_resolution\n\nUnknown domains:\nauthentication, backup, compute, identity, messaging, scheduling, security, storage\n\nKnown domain count:\n3\n\nUnknown domain count:\n8\n\nKnowledge coverage:\n27.27%\n\nStrongest known domain:\nname_resolution\n\nCurrent lifecycle:\nOBSERVE"
+}

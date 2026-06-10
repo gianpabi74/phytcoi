@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-06-10T18:13:09.505784+02:00",
+  "organ": "context",
+  "identity_type": "cognitive_identity",
+  "status": "EARLY_COGNITION",
+  "known_domains": [
+    "name_resolution",
+    "network_access",
+    "recursive_resolution"
+  ],
+  "unknown_domains": [
+    "authentication",
+    "backup",
+    "compute",
+    "identity",
+    "messaging",
+    "scheduling",
+    "security",
+    "storage"
+  ],
+  "knowledge_coverage_percent": 27.27,
+  "identity_text": "I am PHYT-001.\n\nI am a PHYTCOI organism.\n\nI currently possess 12 organs.\n\nI know 1 unique truths.\n\nI know 3 domains.\n\nI do not know 8 domains.\n\nMy strongest domain is:\nname_resolution\n\nMy cognitive maturity is:\nEARLY_COGNITION\n\nMy lifecycle is:\nOBSERVE\n\nI am currently an observing organism.\n\nI am not yet capable of planning,\ndecision making,\nexecution,\nor habitat modification."
+}

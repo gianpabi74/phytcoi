@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-06-10T18:03:34.334309+02:00",
+  "observer": "PHYT-001",
+  "type": "self_dna",
+  "species": "PHYTCOI",
+  "individual": "PHYT-001",
+  "nest": "NEST-ALPHA",
+  "lifecycle": "OBSERVE",
+  "status": "ALIVE",
+  "birth_timestamp": "2026-06-09T14:55:34+02:00",
+  "principles": [
+    "phytcoi_is_organism",
+    "nest_hosts_organism",
+    "habitat_is_external_world",
+    "self_identity_is_not_hostname",
+    "self_identity_is_not_ip_address",
+    "self_identity_is_not_operating_system"
+  ]
+}

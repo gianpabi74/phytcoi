@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-06-10T19:13:44.058317+02:00",
+  "organ": "context",
+  "lifecycle": "OBSERVE",
+  "confidence_type": "domain_confidence",
+  "domain_count": 6,
+  "domains": [
+    {
+      "domain": "file_and_directory_services",
+      "status": "emerging",
+      "confidence_pct": 100.0,
+      "matched_capabilities": 1,
+      "expected_capabilities": 1
+    },
+    {
+      "domain": "identity_and_authentication",
+      "status": "emerging",
+      "confidence_pct": 100.0,
+      "matched_capabilities": 3,
+      "expected_capabilities": 3
+    },
+    {
+      "domain": "name_resolution",
+      "status": "validated",
+      "confidence_pct": 100,
+      "matched_capabilities": 2,
+      "expected_capabilities": 2
+    },
+    {
+      "domain": "network_access",
+      "status": "validated",
+      "confidence_pct": 100,
+      "matched_capabilities": 1,
+      "expected_capabilities": 1
+    },
+    {
+      "domain": "remote_access",
+      "status": "emerging",
+      "confidence_pct": 100.0,
+      "matched_capabilities": 2,
+      "expected_capabilities": 2
+    },
+    {
+      "domain": "web_services",
+      "status": "emerging",
+      "confidence_pct": 100.0,
+      "matched_capabilities": 1,
+      "expected_capabilities": 1
+    }
+  ],
+  "principles": [
+    "confidence_not_truth",
+    "capability_based_confidence",
+    "evidence_first",
+    "observe_only",
+    "no_vendor_truth",
+    "no_hostname_truth"
+  ]
+}

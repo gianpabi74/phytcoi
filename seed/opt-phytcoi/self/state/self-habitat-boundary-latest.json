@@ -1,0 +1,72 @@
+{
+  "timestamp": "2026-06-10T18:04:47.594726+02:00",
+  "organ": "self",
+  "boundary_type": "self_habitat_boundary",
+  "species": "PHYTCOI",
+  "individual": "PHYT-001",
+  "nest": "NEST-ALPHA",
+  "lifecycle": "OBSERVE",
+  "status": "BOUNDARY_DEFINED",
+  "definitions": {
+    "self": "PHYTCOI is the observing cognitive organism.",
+    "nest": "The nest is the runtime container or host environment where the PHYTCOI individual currently lives.",
+    "habitat": "The habitat is the external environment observed by PHYTCOI.",
+    "organ": "An organ is an internal PHYTCOI capability-bearing cognitive subsystem.",
+    "habitat_object": "A habitat object is an external observed object, endpoint, service or system in the habitat.",
+    "capability": "A capability is an observed functional ability associated with a habitat object or future internal organ, but it is not itself an organ.",
+    "truth": "A truth is a validated portable statement derived from evidence, relationship and context."
+  },
+  "boundary_rules": [
+    "PHYTCOI is not the habitat.",
+    "PHYTCOI is not the nest.",
+    "The nest hosts PHYTCOI but is not PHYTCOI.",
+    "Organs belong to PHYTCOI.",
+    "Habitat objects belong to the habitat.",
+    "Capabilities describe functional abilities; they are not organs by default.",
+    "IP addresses are habitat object identifiers, not organs.",
+    "Hostnames are labels, not truth.",
+    "Products and vendors are implementation details, not ontology.",
+    "In OBSERVE lifecycle PHYTCOI may observe, record, relate, contextualize and validate truth.",
+    "In OBSERVE lifecycle PHYTCOI must not decide, approve, execute or modify the habitat."
+  ],
+  "current_self_organs": [
+    "context",
+    "discovery",
+    "experience",
+    "hypothesis",
+    "knowledge",
+    "memory",
+    "observatory",
+    "observer",
+    "relationship",
+    "self",
+    "truth",
+    "understanding"
+  ],
+  "current_habitat_capabilities": [
+    "authoritative_name_provider",
+    "network_gateway_provider",
+    "recursive_resolution_provider"
+  ],
+  "current_habitat_objects": [
+    "192.168.1.1",
+    "192.168.1.203",
+    "192.168.1.251"
+  ],
+  "current_nest_observation": {
+    "self_ip": "192.168.1.221",
+    "hostname": "nest-alpha",
+    "gateway": "192.168.1.1",
+    "os": "Debian GNU/Linux 13 (trixie)",
+    "kernel": "6.12.90+deb13.1-amd64"
+  },
+  "known_boundary_warnings": [],
+  "forbidden_confusions": [
+    "do_not_treat_ip_address_as_organ",
+    "do_not_treat_hostname_as_identity_truth",
+    "do_not_treat_vendor_as_truth",
+    "do_not_treat_product_as_truth",
+    "do_not_treat_habitat_capability_as_internal_organ",
+    "do_not_treat_nest_as_organism"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "probe_id": "germ_authoritative_name_provider_probe",
+  "status": "READY",
+  "target_capability": "authoritative_name_provider",
+  "mode": "observe_only",
+  "purpose": "observe authoritative name service behavior without relying on product, vendor or hostname identity",
+  "actions": [
+    "soa_query",
+    "ns_query",
+    "authoritative_answer_check",
+    "recursion_desired_disabled_query"
+  ],
+  "evidence_required": [
+    "soa_record_present",
+    "ns_record_present",
+    "authoritative_response_observed"
+  ],
+  "forbidden_assumptions": [
+    "port_53_open_means_authoritative",
+    "resolver_present_means_authoritative",
+    "hostname_identity",
+    "vendor_identity",
+    "product_identity"
+  ]
+}

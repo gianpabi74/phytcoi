@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+LEDGER = ROOT / "context/state/validation-candidate-ledger-latest.json"
+OUTDIR = ROOT / "experience/stability"
+STATE = ROOT / "experience/state"
+JOURNAL = ROOT / "experience/journal"
+
+ledger = json.loads(LEDGER.read_text())
+
+previous_records = sorted(OUTDIR.glob("temporal-stability-*.json"))
+
+history_by_domain = {}
+
+for record_file in previous_records:
+    try:
+        data = json.loads(record_file.read_text())
+        for d in data.get("domains", []):
+            history_by_domain.setdefault(d["domain"], []).append(d)
+    except Exception:
+        pass
+
+domains = []
+
+for c in ledger.get("candidates", []):
+    domain = c["domain"]
+    previous = history_by_domain.get(domain, [])
+
+    observation_count = len(previous) + 1
+
+    current_signature = {
+        "supporting_capabilities": sorted(c.get("supporting_capabilities", [])),
+        "confidence_pct": c.get("confidence_pct"),
+        "ledger_status": c.get("ledger_status")
+    }
+
+    stable_previous = 0
+    for old in previous:
+        if old.get("signature") == current_signature:
+            stable_previous += 1
+
+    stable_count = stable_previous + 1
+    stability_pct = round((stable_count / observation_count) * 100, 2)
+
+    if observation_count < 3:
+        stability_status = "insufficient_temporal_depth"
+    elif stability_pct >= 90:
+        stability_status = "temporally_stable"
+    elif stability_pct >= 50:
+        stability_status = "partially_stable"
+    else:
+        stability_status = "unstable"
+
+    domains.append({
+        "domain": domain,
+        "experience_type": "temporal_stability_observation",
+        "observation_count": observation_count,
+        "stable_count": stable_count,
+        "stability_pct": stability_pct,
+        "stability_status": stability_status,
+        "signature": current_signature,
+        "validation_impact": "not_validating",
+        "required_before_validation": [
+            "minimum_three_temporal_observations",
+            "stable_signature_across_observations",
+            "relationship_context_generation",
+            "truth_derivation_candidate"
+        ]
+    })
+
+payload = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "experience",
+    "lifecycle": "OBSERVE",
+    "stability_type": "domain_temporal_stability",
+    "domain_count": len(domains),
+    "domains": domains,
+    "principles": [
+        "experience_from_repetition",
+        "temporal_stability_not_validation",
+        "confidence_not_truth",
+        "observe_only",
+        "no_decision",
+        "no_execution"
+    ]
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record = OUTDIR / f"temporal-stability-{stamp}.json"
+latest = STATE / "temporal-stability-latest.json"
+journal = JOURNAL / f"temporal-stability-run-{stamp}.json"
+
+record.write_text(json.dumps(payload, indent=2) + "\n")
+latest.write_text(json.dumps(payload, indent=2) + "\n")
+journal.write_text(json.dumps({
+    "timestamp": payload["timestamp"],
+    "organ": "experience",
+    "status": "OK",
+    "record_file": str(record),
+    "latest_file": str(latest),
+    "domain_count": len(domains)
+}, indent=2) + "\n")
+
+print("===== TEMPORAL STABILITY =====")
+print()
+for d in domains:
+    print(
+        f'{d["domain"]} -> '
+        f'{d["stability_status"]} '
+        f'observations={d["observation_count"]} '
+        f'stability={d["stability_pct"]}%'
+    )
+
+print()
+print("record_file =", record)
+print("latest_file =", latest)

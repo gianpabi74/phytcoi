@@ -1,0 +1,235 @@
+#!/usr/bin/env python3
+import json
+from pathlib import Path
+from datetime import datetime
+
+ROOT = Path("/opt/phytcoi")
+PUB = ROOT / "observatory" / "public"
+STATE = ROOT / "observatory" / "state" / "observatory-state.json"
+
+def load(path, default=None):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return default if default is not None else {}
+
+identity = load(ROOT / "identity" / "phyt-001.json", {})
+observer = load(ROOT / "observer" / "state" / "observer-state.json", {})
+discovery = load(ROOT / "discovery" / "state" / "discovery-state.json", {})
+memory = load(ROOT / "memory" / "state" / "memory-state.json", {})
+
+evidence_count = len(list((ROOT / "evidence").rglob("*.json")))
+hypothesis_count = len(list((ROOT / "hypothesis").rglob("*.json")))
+dna_count = len(list((ROOT / "dna").rglob("*.json")))
+memory_count = len(list((ROOT / "memory" / "records").glob("*.json")))
+germ_count = len(list((ROOT / "runtime" / "germ").glob("*.json")))
+
+phenotype_src = ROOT / "runtime" / "phenotype" / "phyt-001-current.svg"
+phenotype_dst = PUB / "phyt-001-current.svg"
+
+if phenotype_src.exists():
+    phenotype_dst.write_text(phenotype_src.read_text())
+
+activity = []
+
+for organ in ["observer", "discovery", "memory"]:
+    jdir = ROOT / organ / "journal"
+    if not jdir.exists():
+        continue
+
+    for f in sorted(jdir.glob("*.json"))[-10:]:
+        activity.append(
+            {
+                "ts": f.stat().st_mtime,
+                "text": f"{organ.capitalize()} metabolism"
+            }
+        )
+
+activity = sorted(activity, key=lambda x: x["ts"], reverse=True)[:12]
+
+activity_html = "".join(
+    f"<div class='event'>{a['text']}</div>"
+    for a in activity
+)
+
+now = datetime.now().astimezone().isoformat()
+
+def status_dot(status):
+    return "🟢" if status == "ALIVE" else "🟡"
+
+html = f"""
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYT-001 Observatory</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root {{
+--bg:#050b08;
+--panel:#0a1811;
+--green:#39d98a;
+--cyan:#55f0c2;
+--text:#e8fff4;
+--muted:#8bb89e;
+}}
+
+body {{
+margin:0;
+background:
+radial-gradient(circle at 50% 10%, rgba(57,217,138,.20), transparent 30%),
+var(--bg);
+color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}}
+
+.header {{
+padding:24px;
+display:flex;
+justify-content:space-between;
+}}
+
+.grid {{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+padding:20px;
+}}
+
+.card {{
+background:#09140f;
+border:1px solid rgba(57,217,138,.2);
+border-radius:24px;
+padding:20px;
+}}
+
+.phenotype {{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:420px;
+}}
+
+.phenotype img {{
+width:380px;
+}}
+
+.metric {{
+font-size:32px;
+color:var(--cyan);
+font-weight:bold;
+}}
+
+.organ {{
+padding:10px;
+margin-bottom:10px;
+border-radius:12px;
+background:rgba(255,255,255,.04);
+display:flex;
+justify-content:space-between;
+}}
+
+.event {{
+padding:10px;
+margin-bottom:8px;
+border-left:3px solid var(--green);
+background:rgba(255,255,255,.03);
+}}
+
+.footer {{
+padding:20px;
+font-size:12px;
+color:var(--muted);
+}}
+
+h2 {{
+color:var(--green);
+}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div>
+<h1>🌱 PHYT-001</h1>
+<div>PHYTCOI Observatory</div>
+</div>
+<div>ALIVE · OBSERVE</div>
+</div>
+
+<div class="grid">
+
+<div class="card phenotype">
+<img src="phyt-001-current.svg">
+</div>
+
+<div class="card">
+<h2>Live State</h2>
+
+<div>Species: {identity.get('species','PHYTCOI')}</div>
+<div>Individual: {identity.get('individual','PHYT-001')}</div>
+<div>Nest: {identity.get('nest','NEST-ALPHA')}</div>
+
+<br>
+
+<div class="organ">
+<span>{status_dot(observer.get('status'))} Observer</span>
+<span>{observer.get('run_count',0)}</span>
+</div>
+
+<div class="organ">
+<span>{status_dot(discovery.get('status'))} Discovery</span>
+<span>{discovery.get('run_count',0)}</span>
+</div>
+
+<div class="organ">
+<span>{status_dot(memory.get('status'))} Memory</span>
+<span>{memory.get('run_count',0)}</span>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Knowledge</h2>
+
+<div class="metric">{evidence_count}</div>
+<div>Evidence</div>
+
+<br>
+
+<div class="metric">{hypothesis_count}</div>
+<div>Hypotheses</div>
+
+<br>
+
+<div class="metric">{memory_count}</div>
+<div>Memory Records</div>
+
+<br>
+
+<div class="metric">{dna_count}</div>
+<div>DNA Records</div>
+</div>
+
+<div class="card">
+<h2>Recent Activity</h2>
+{activity_html}
+</div>
+
+</div>
+
+<div class="footer">
+Generated from PHYTCOI state
+</div>
+
+</body>
+</html>
+"""
+
+(PUB / "index.html").write_text(html)
+
+state = load(STATE, {})
+state["last_render"] = now
+state["render_count"] = state.get("render_count", 0) + 1
+STATE.write_text(json.dumps(state, indent=2))

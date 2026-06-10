@@ -1,0 +1,31 @@
+{
+  "probe_id": "evidence_interpretation_probe",
+  "status": "READY",
+  "mode": "observe_only",
+  "purpose": "interpret observed evidence patterns into candidate capabilities without asserting truth, vendor, product or hostname identity",
+  "allowed_inputs": [
+    "tcp_service_observation_records"
+  ],
+  "outputs": [
+    "interpreted_capability_candidates"
+  ],
+  "forbidden_actions": [
+    "decision",
+    "execution",
+    "habitat_modification",
+    "truth_assertion",
+    "vendor_truth",
+    "product_truth",
+    "hostname_truth"
+  ],
+  "principles": [
+    "evidence_first",
+    "candidate_not_truth",
+    "capability_first",
+    "function_first",
+    "no_vendor_truth",
+    "no_product_truth",
+    "no_hostname_truth",
+    "observe_only"
+  ]
+}

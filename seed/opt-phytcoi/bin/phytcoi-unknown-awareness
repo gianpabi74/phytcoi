@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("/opt/phytcoi")
+
+knowledge = json.loads((ROOT/"knowledge/state/knowledge-awareness-latest.json").read_text())
+truth = json.loads((ROOT/"truth/state/truth-awareness-latest.json").read_text())
+
+observed_domains = sorted(set(knowledge.get("observed_domains", [])))
+truth_domains = sorted(set(truth.get("truth_supported_domains", [])))
+known_domains = sorted(set(observed_domains + truth_domains))
+
+candidate_domains = [
+    "name_resolution",
+    "recursive_resolution",
+    "network_access",
+    "identity",
+    "authentication",
+    "storage",
+    "backup",
+    "compute",
+    "security",
+    "scheduling",
+    "messaging"
+]
+
+unknown_domains = sorted([d for d in candidate_domains if d not in known_domains])
+
+known_count = len(known_domains)
+unknown_count = len(unknown_domains)
+coverage_pct = round((known_count / len(candidate_domains)) * 100, 2) if candidate_domains else 0
+strongest_known_domain = "name_resolution" if "name_resolution" in known_domains else None
+
+awareness_text = f"""
+Known domains:
+{", ".join(known_domains)}
+
+Unknown domains:
+{", ".join(unknown_domains)}
+
+Known domain count:
+{known_count}
+
+Unknown domain count:
+{unknown_count}
+
+Knowledge coverage:
+{coverage_pct}%
+
+Strongest known domain:
+{strongest_known_domain or "unknown"}
+
+Current lifecycle:
+OBSERVE
+""".strip()
+
+record = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "knowledge",
+    "awareness_type": "unknown_awareness",
+    "status": "AWARE",
+    "known_domains": known_domains,
+    "unknown_domains": unknown_domains,
+    "known_domain_count": known_count,
+    "unknown_domain_count": unknown_count,
+    "knowledge_coverage_percent": coverage_pct,
+    "strongest_known_domain": strongest_known_domain,
+    "awareness_text": awareness_text
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record_file = ROOT/"knowledge/unknown"/f"unknown-awareness-{stamp}.json"
+latest_file = ROOT/"knowledge/state"/"unknown-awareness-latest.json"
+journal_file = ROOT/"knowledge/journal"/f"unknown-awareness-run-{stamp}.json"
+
+record_file.parent.mkdir(parents=True, exist_ok=True)
+latest_file.parent.mkdir(parents=True, exist_ok=True)
+journal_file.parent.mkdir(parents=True, exist_ok=True)
+
+record_file.write_text(json.dumps(record, indent=2) + "\n")
+latest_file.write_text(json.dumps(record, indent=2) + "\n")
+journal_file.write_text(json.dumps({
+    "timestamp": record["timestamp"],
+    "status": "OK",
+    "record_file": str(record_file),
+    "latest_file": str(latest_file)
+}, indent=2) + "\n")
+
+print("===== UNKNOWN AWARENESS =====")
+print(awareness_text)
+print()
+print("===== FILES =====")
+print(f"record_file={record_file}")
+print(f"latest_file={latest_file}")

@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT = Path("/opt/phytcoi")
+
+CONFIDENCE = json.loads(
+    (ROOT / "context/state/domain-confidence-latest.json").read_text()
+)
+
+results = []
+
+for domain in CONFIDENCE.get("domains", []):
+
+    status = domain.get("status")
+    confidence = float(domain.get("confidence_pct", 0))
+    matched = domain.get("matched_capabilities", 0)
+    expected = domain.get("expected_capabilities", 1)
+
+    readiness = "not_ready"
+    reasons = []
+
+    if status == "validated":
+        readiness = "already_validated"
+        reasons.append("domain_already_validated")
+
+    elif confidence >= 100 and matched >= expected:
+        readiness = "candidate"
+        reasons.extend([
+            "all_expected_capabilities_observed",
+            "confidence_reached_threshold"
+        ])
+
+    elif confidence >= 50:
+        readiness = "emerging"
+        reasons.append("partial_domain_support_observed")
+
+    else:
+        readiness = "insufficient_evidence"
+        reasons.append("additional_capabilities_required")
+
+    results.append({
+        "domain": domain["domain"],
+        "status": status,
+        "confidence_pct": confidence,
+        "promotion_readiness": readiness,
+        "reasons": reasons
+    })
+
+payload = {
+    "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
+    "organ": "context",
+    "lifecycle": "OBSERVE",
+    "readiness_type": "domain_promotion_readiness",
+    "candidate_count": len([
+        x for x in results
+        if x["promotion_readiness"] == "candidate"
+    ]),
+    "domains": results,
+    "principles": [
+        "promotion_candidate_not_validation",
+        "confidence_not_truth",
+        "observe_only",
+        "no_auto_promotion",
+        "no_decision_engine",
+        "no_executor"
+    ]
+}
+
+stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+record = ROOT / "context/readiness" / f"promotion-readiness-{stamp}.json"
+latest = ROOT / "context/state/promotion-readiness-latest.json"
+
+record.write_text(json.dumps(payload, indent=2) + "\n")
+latest.write_text(json.dumps(payload, indent=2) + "\n")
+
+print("===== DOMAIN PROMOTION READINESS =====")
+print()
+
+for d in results:
+    print(
+        f'{d["domain"]} -> '
+        f'{d["promotion_readiness"]} '
+        f'[{d["status"]}] '
+        f'confidence={d["confidence_pct"]}%'
+    )
+
+print()
+print("candidate_count =", payload["candidate_count"])
+print()
+print("record_file =", record)
+print("latest_file =", latest)

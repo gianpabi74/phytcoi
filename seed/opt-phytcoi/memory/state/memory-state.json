@@ -3,8 +3,8 @@
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
-  "birth_timestamp": null,
-  "last_run": null,
-  "run_count": 0,
-  "memory_records_count": 0
+  "birth_timestamp": "2026-06-09T17:21:22+02:00",
+  "last_run": "2026-06-10T19:08:38.034053+02:00",
+  "run_count": 57,
+  "memory_records_count": 57
 }
