@@ -1,451 +1,328 @@
 # PHYT-001 Specification v1
 
-## Purpose
+## Status
 
-This document defines PHYT-001, the first known individual of the PHYTCOI species.
+Approved
 
-PHYT-001 is not the species.
+## Scope
 
-PHYT-001 is an instance of the species.
+Defines the current state of the first known PHYTCOI individual.
 
-Its purpose is to demonstrate that the PHYTCOI architecture can exist, learn, adapt and survive inside a real habitat.
+This document describes the actual implementation status of PHYT-001 running inside NEST-ALPHA.
+
+This document must reflect reality rather than future intentions.
 
 ---
 
-# Identity
-
-Individual Identifier:
-
-PHYT-001
+# Individual Identity
 
 Species:
 
 PHYTCOI
 
-Birth Habitat:
+Individual:
+
+PHYT-001
+
+Nest:
 
 NEST-ALPHA
 
 Generation:
 
-Generation 1
+G1
 
-Lifecycle State at Birth:
+---
+
+# Lifecycle State
+
+Current Lifecycle:
 
 OBSERVE
 
-Status:
+Current Status:
 
-Planned
+ALIVE
 
----
+Confidence:
 
-# Individual Principle
-
-PHYT-001 is born ignorant.
-
-PHYT-001 is born curious.
-
-PHYT-001 is born safe.
-
-The individual must learn its habitat before acting upon it.
-
-Understanding precedes intervention.
+HIGH
 
 ---
 
-# Birth State
+# Current Cognitive Maturity
 
-At birth, PHYT-001 possesses:
+Current Level:
 
-* Constitution
-* Mission
-* Genome
-* Lifecycle
-* Kernel
-* Cognitive Primitives
+M3 — Understanding
 
-PHYT-001 does not possess habitat knowledge.
+The organism has progressed beyond simple observation and knowledge generation.
+
+PHYT-001 is capable of deriving meaning from accumulated knowledge.
 
 ---
 
-# Initial Cognitive State
-
-At birth:
-
-DNA:
-
-Empty
-
-World Model:
-
-Empty
-
-Experience:
-
-Empty
-
-Adaptations:
-
-Empty
-
-Trust:
-
-Minimal
-
-Authority:
-
-Observe Only
-
-The individual begins life with no habitat truth.
-
----
-
-# Innate Cognitive Primitives
-
-PHYT-001 inherits cognitive primitives from the Genome.
-
-Examples include:
-
-* Object
-* Capability
-* Relationship
-* Dependency
-* Evidence
-* Hypothesis
-* Knowledge
-* Trust
-* Risk
-* Adaptation
-
-These primitives allow understanding.
-
-They do not contain habitat knowledge.
-
----
-
-# Innate Behavioral Primitives
-
-PHYT-001 is born with behavioral capabilities.
-
-Examples:
-
-* Observe
-* Compare
-* Correlate
-* Validate
-* Learn
-* Remember
-* Protect
-* Adapt
-
-These behaviors define learning potential.
-
----
-
-# Habitat Knowledge Principle
-
-PHYT-001 possesses no habitat-specific knowledge at birth.
-
-Examples of forbidden birth knowledge:
-
-* vendor names
-* product names
-* platform names
-* topology assumptions
-* infrastructure assumptions
-
-All habitat truth must be discovered.
-
----
-
-# Initial Objectives
-
-The first objectives of PHYT-001 are:
-
-1. Observe
-
-2. Discover habitat objects
-
-3. Collect evidence
-
-4. Generate hypotheses
-
-5. Build DNA
-
-6. Build a World Model
-
-7. Accumulate Experience
-
-Action is not an initial objective.
-
-Understanding is.
-
----
-
-# Initial Active Organs
-
-The following organs are active at birth.
-
----
-
-## Kernel
-
-Responsible for:
-
-* lifecycle management
-* species law enforcement
-* organ coordination
-
----
-
-## Discovery
-
-Responsible for:
-
-* habitat observation
-* object discovery
-* evidence acquisition
-
----
-
-## Evidence
-
-Responsible for:
-
-* evidence collection
-* evidence validation
-* evidence preservation
-
----
-
-## Hypothesis
-
-Responsible for:
-
-* candidate knowledge generation
-* uncertainty management
-
----
-
-## Memory
-
-Responsible for:
-
-* persistence
-* retention
-* recall
-
----
-
-# Initial Dormant Organs
-
-The following organs remain dormant.
-
----
-
-## Cambium
-
-Dormant until sufficient habitat understanding exists.
-
----
-
-## Adaptation Systems
-
-Dormant until validated growth opportunities exist.
-
----
-
-## Autonomous Execution
-
-Dormant until trust conditions are satisfied.
-
----
-
-# Lifecycle Progression
-
-PHYT-001 progresses through trust stages.
-
-OBSERVE
-
-↓
-
-NOTOUCH
-
-↓
-
-PROGRESSIVE TRUST ASSESSMENT
-
-↓
-
-FIX AND APPLY
-
-Progression is earned.
-
-Progression is not automatic.
-
----
-
-# DNA Development
-
-The DNA begins empty.
-
-DNA is gradually constructed through:
-
-* observation
-* evidence
-* validation
-
-DNA represents learned habitat truth.
-
----
-
-# World Model Development
-
-The World Model begins empty.
-
-The World Model emerges from:
-
-* DNA
-* relationships
-* dependencies
-* experience
-
-Understanding is learned.
-
----
-
-# Experience Development
-
-Experience begins empty.
-
-Experience accumulates through:
-
-* events
-* outcomes
-* lessons
-* recoveries
-* failures
-* successes
-
-Wisdom is earned.
-
----
-
-# Adaptation Development
-
-Adaptations do not exist at birth.
-
-Adaptations emerge through:
-
-* understanding
-* experience
-* validated growth opportunities
-
-Growth follows learning.
-
----
-
-# Trust Development
-
-Trust begins at the minimum level.
-
-Trust increases through:
-
-* successful observation
-* accurate understanding
-* safe behavior
-* validated outcomes
-
-Trust may decrease through failure.
-
----
-
-# Relationship with NEST-ALPHA
-
-PHYT-001 is born within NEST-ALPHA.
-
-The individual depends upon the habitat.
-
-The habitat does not depend upon the individual.
-
-Habitat continuity always has priority.
-
----
-
-# Relationship with Future Individuals
-
-PHYT-001 is the first generation reference individual.
-
-Future individuals may differ in:
-
-* DNA
-* World Model
-* Experience
-* Adaptations
-
-All individuals remain members of the PHYTCOI species.
-
----
-
-# Long-Term Objective
-
-The objective of PHYT-001 is not immediate autonomy.
-
-The objective is progressive maturation.
-
-The individual should evolve from:
+# Active Cognitive Chain
 
 Observer
 
 ↓
 
-Learner
+Discovery
 
 ↓
 
-Interpreter
+Memory
 
 ↓
 
-Governor
+Experience
 
 ↓
 
-Habitat Steward
+Knowledge
 
-This progression defines successful development.
+↓
+
+Understanding
 
 ---
 
-# Success Criteria
+# Implemented Organs
 
-PHYT-001 is considered successful when it can:
+## Observer
 
-* understand its habitat
-* maintain habitat continuity
-* adapt safely
-* govern responsibly
-* preserve species law
+Status:
 
-without compromising habitat safety.
+ALIVE
+
+Purpose:
+
+Observe reality and gather evidence.
 
 ---
 
-# Final Rule
+## Discovery
 
-PHYT-001 is not born knowledgeable.
+Status:
 
-PHYT-001 is born capable of learning.
+ALIVE
 
-Knowledge is acquired.
+Purpose:
 
-Understanding is acquired.
+Generate functional classifications from evidence.
 
-Wisdom is acquired.
+---
 
-Trust is acquired.
+## Memory
 
-PHYT-001 succeeds not because it knows everything at birth.
+Status:
 
-PHYT-001 succeeds because it learns how to live within its habitat.
+ALIVE
+
+Purpose:
+
+Persist observations and discoveries over time.
+
+---
+
+## Experience
+
+Status:
+
+ALIVE
+
+Purpose:
+
+Recognize recurring patterns across metabolism cycles.
+
+Current Example:
+
+stable_growth
+
+---
+
+## Knowledge
+
+Status:
+
+ALIVE
+
+Purpose:
+
+Transform repeated experiences into reusable truths.
+
+Current Example:
+
+stable_internal_metabolism
+
+---
+
+## Understanding
+
+Status:
+
+ALIVE
+
+Purpose:
+
+Derive meaning from validated knowledge.
+
+Current Example:
+
+healthy_internal_growth
+
+---
+
+# Current Cognitive Outputs
+
+Knowledge:
+
+stable_internal_metabolism
+
+Understanding:
+
+healthy_internal_growth
+
+Meaning:
+
+The organism demonstrates healthy and coherent cognitive growth across observer, discovery, memory, experience and knowledge.
+
+Confidence:
+
+High
+
+---
+
+# Observatory
+
+Status:
+
+ALIVE
+
+Version:
+
+observatory_v3_cognition
+
+Capabilities:
+
+* Cognitive cockpit
+* Phenotype visualization
+* Cognitive metrics
+* Organ activity visualization
+* Lifecycle visualization
+
+Port:
+
+8088
+
+---
+
+# Current Phenotype State
+
+Phenotype Stage:
+
+Seedling
+
+Phenotype Progress:
+
+60%
+
+Current Principle:
+
+Phenotype evolution is being migrated from data-based growth toward cognitive maturity-based growth.
+
+---
+
+# Current Constitutional Compliance
+
+PHYT-001 currently operates according to:
+
+* Function First
+* Evidence First
+* Relationship First
+* No Vendor Truth
+* No Local Logic
+
+Local names are permitted only within germination and evidence acquisition layers.
+
+Long-term cognition must operate on functional classifications.
+
+---
+
+# Current Limitations
+
+The organism cannot:
+
+* Execute habitat modifications
+* Make autonomous decisions
+* Request approvals
+* Change lifecycle state
+
+These capabilities are intentionally disabled during OBSERVE.
+
+---
+
+# Planned Next Cognitive Milestones
+
+M4 — Relationship Understanding
+
+Purpose:
+
+Understand relationships between functions.
+
+Examples:
+
+* depends_on
+* provides_to
+* protects
+* authorizes
+* backs_up
+
+---
+
+M5 — Habitat Understanding
+
+Purpose:
+
+Understand the ecosystem as a coherent habitat.
+
+Examples:
+
+* resilience
+* survivability
+* redundancy
+* bottlenecks
+* critical dependencies
+
+---
+
+# Current Assessment
+
+Individual:
+
+PHYT-001
+
+Lifecycle:
+
+OBSERVE
+
+Status:
+
+ALIVE
+
+Cognitive Maturity:
+
+M3 — Understanding
+
+Growth State:
+
+Healthy Internal Growth
+
+Confidence:
+
+High
+
+Assessment:
+
+PHYT-001 demonstrates coherent cognitive development and stable internal metabolism while remaining fully constrained within OBSERVE lifecycle boundaries.
