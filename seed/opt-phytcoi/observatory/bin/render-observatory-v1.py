@@ -33,6 +33,8 @@ discovery = load(ROOT / "discovery" / "state" / "discovery-state.json", {})
 memory = load(ROOT / "memory" / "state" / "memory-state.json", {})
 experience = load(ROOT / "experience" / "state" / "experience-state.json", {})
 knowledge = load(ROOT / "knowledge" / "state" / "knowledge-state.json", {})
+understanding = load(ROOT / "understanding" / "state" / "understanding-state.json", {})
+relationship = load(ROOT / "relationship" / "state" / "relationship-state.json", {})
 
 evidence_count = count(ROOT / "evidence")
 hypothesis_count = count(ROOT / "hypothesis")
@@ -40,6 +42,8 @@ dna_count = count(ROOT / "dna")
 memory_count = count(ROOT / "memory" / "records")
 experience_count = count(ROOT / "experience" / "records")
 knowledge_count = count(ROOT / "knowledge" / "records")
+understanding_count = count(ROOT / "understanding" / "records")
+relationship_count = count(ROOT / "relationship" / "records")
 germ_count = count(ROOT / "runtime" / "germ")
 
 phenotype_src = ROOT / "runtime" / "phenotype" / "phyt-001-current.svg"
@@ -351,8 +355,8 @@ h2 {{
       <div class="metrics">
         <div class="metric"><div><b>{experience_count}</b><span>Experience</span></div></div>
         <div class="metric"><div><b>{knowledge_count}</b><span>Knowledge</span></div></div>
-        <div class="metric"><div><b>{knowledge.get('confidence','-').upper()}</b><span>Confidence</span></div></div>
-        <div class="metric"><div><b>{knowledge.get('run_count',0)}</b><span>Know Runs</span></div></div>
+        <div class="metric"><div><b>{understanding_count}</b><span>Understanding</span></div></div>
+        <div class="metric"><div><b>{relationship_count}</b><span>Relationship</span></div></div>
       </div>
     </div>
 
@@ -388,5 +392,5 @@ PUB.mkdir(parents=True, exist_ok=True)
 state = load(STATE, {})
 state["last_render"] = now
 state["render_count"] = state.get("render_count", 0) + 1
-state["ui_version"] = "observatory_v3_cognition"
+state["ui_version"] = "observatory_v3_cognition_relationship"
 STATE.write_text(json.dumps(state, indent=2) + "\n")

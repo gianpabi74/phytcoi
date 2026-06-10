@@ -1,0 +1,40 @@
+{
+  "organ_id": "relationship",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "derive universal relationships between functions, truths and meanings",
+  "inputs": [
+    "knowledge_records",
+    "understanding_records",
+    "classification_candidates"
+  ],
+  "outputs": [
+    "relationship_records",
+    "relationship_journal"
+  ],
+  "allowed_actions": [
+    "read_knowledge",
+    "read_understanding",
+    "read_classifications",
+    "derive_relationship",
+    "persist_relationship"
+  ],
+  "forbidden_actions": [
+    "decision",
+    "execution",
+    "habitat_modification",
+    "approval",
+    "lifecycle_change",
+    "hardcode_local_names"
+  ],
+  "principles": [
+    "relationship_first",
+    "function_first",
+    "evidence_first",
+    "no_vendor_truth",
+    "no_local_logic",
+    "observe_only"
+  ]
+}
