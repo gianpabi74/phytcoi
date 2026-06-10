@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#06120d"/>
+<g fill="none" stroke="#27f58a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)">
+<path d="M105 280 C55 205,100 105,205 95 C285 35,405 80,420 180 C485 245,420 365,315 350 C235 405,115 360,105 280Z"/>
+<path d="M180 350 C165 390,145 420,120 445"/>
+<path d="M250 350 C245 395,235 425,220 455"/>
+<path d="M330 340 C345 385,365 415,395 445"/>
+<path d='M115 115 C145 80, 185 150, 220 115'/><path d='M133 146 C163 111, 203 181, 238 146'/><path d='M151 177 C181 142, 221 212, 256 177'/><path d='M169 208 C199 173, 239 243, 274 208'/><path d='M187 119 C217 84, 257 154, 292 119'/>
+</g>
+<text x="256" y="410" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#eafff3">PHYT-001</text>
+<text x="256" y="445" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#27f58a">COGNITIVE PHENOTYPE</text>
+<defs><filter id="g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+</svg>

@@ -1,0 +1,12 @@
+{
+  "layer": "life",
+  "species": "PHYTCOI",
+  "status": "ALIVE",
+  "purpose": "store organism life events and milestones",
+  "rules": [
+    "organ_journals_are_local",
+    "life_events_are_global",
+    "life_timeline_is_chronological",
+    "life_events_are_immutable"
+  ]
+}

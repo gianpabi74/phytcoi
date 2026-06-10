@@ -3,8 +3,9 @@
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
-  "birth_timestamp": "2026-06-09T19:18:29+02:00",
-  "last_render": "2026-06-09T19:35:27.928257+02:00",
-  "render_count": 5,
-  "port": 8088
+  "birth_timestamp": null,
+  "last_render": null,
+  "render_count": 0,
+  "port": 8088,
+  "ui_version": "observatory_v3_cognition"
 }

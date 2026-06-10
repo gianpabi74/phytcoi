@@ -1,0 +1,28 @@
+{
+  "organ_id": "understanding",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "derive meaning from persistent knowledge",
+  "inputs": [
+    "knowledge_records",
+    "knowledge_state"
+  ],
+  "outputs": [
+    "understanding_records",
+    "understanding_journal"
+  ],
+  "allowed_actions": [
+    "read_knowledge",
+    "derive_meaning",
+    "persist_understanding"
+  ],
+  "forbidden_actions": [
+    "decision",
+    "execution",
+    "habitat_modification",
+    "approval",
+    "lifecycle_change"
+  ]
+}

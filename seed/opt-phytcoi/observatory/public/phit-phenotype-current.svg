@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#06120d"/>
+<g transform="translate(256 270) scale(0.75) translate(-256 -270)" fill="none" stroke="#32f28a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)">
+<path d="M255 375 C220 315,220 230,260 170 C310 230,305 315,255 375Z"/>
+<path d="M260 170 C315 105,375 115,410 170 C350 185,305 190,260 170Z"/>
+<path d="M250 175 C205 105,145 125,105 185 C165 195,210 195,250 175Z"/>
+
+<path d="M255 375 C235 420,210 445,170 470"/>
+<path d="M255 375 C280 420,315 445,365 470"/>
+<path d="M255 375 C255 420,250 450,245 480"/>
+<path d="M335 150 C395 90,420 55,405 35"/>
+<path d="M130 190 C85 160,60 130,50 95"/>
+<circle cx="255" cy="200" r="10" fill="#32f28a"/>
+</g>
+<text x="256" y="420" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#eafff3">PHIT-001</text>
+<text x="256" y="455" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#32f28a">PHIT PHENOTYPE</text>
+<defs><filter id="g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+</svg>

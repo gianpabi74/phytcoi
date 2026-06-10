@@ -1,0 +1,38 @@
+{
+  "organ_id": "experience",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "derive persistent experience from repeated observation, discovery and memory patterns",
+  "inputs": [
+    "observer_state",
+    "discovery_state",
+    "memory_state",
+    "memory_records",
+    "life_events"
+  ],
+  "outputs": [
+    "experience_records",
+    "experience_journal"
+  ],
+  "allowed_actions": [
+    "read_state",
+    "compare_growth",
+    "derive_pattern",
+    "persist_experience"
+  ],
+  "forbidden_actions": [
+    "modify_habitat",
+    "execute",
+    "decide",
+    "authorize",
+    "change_lifecycle"
+  ],
+  "principles": [
+    "experience_from_repetition",
+    "no_action",
+    "no_decision",
+    "observe_only"
+  ]
+}

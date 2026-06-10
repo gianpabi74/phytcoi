@@ -13,215 +13,380 @@ def load(path, default=None):
     except Exception:
         return default if default is not None else {}
 
+def count(path, pattern="*.json"):
+    p = Path(path)
+    return len(list(p.rglob(pattern))) if p.exists() else 0
+
+def icon_for(text):
+    t = text.lower()
+    if "memory" in t:
+        return "🧠"
+    if "discovery" in t:
+        return "🌿"
+    if "observer" in t:
+        return "🟢"
+    return "🌱"
+
 identity = load(ROOT / "identity" / "phyt-001.json", {})
 observer = load(ROOT / "observer" / "state" / "observer-state.json", {})
 discovery = load(ROOT / "discovery" / "state" / "discovery-state.json", {})
 memory = load(ROOT / "memory" / "state" / "memory-state.json", {})
+experience = load(ROOT / "experience" / "state" / "experience-state.json", {})
+knowledge = load(ROOT / "knowledge" / "state" / "knowledge-state.json", {})
 
-evidence_count = len(list((ROOT / "evidence").rglob("*.json")))
-hypothesis_count = len(list((ROOT / "hypothesis").rglob("*.json")))
-dna_count = len(list((ROOT / "dna").rglob("*.json")))
-memory_count = len(list((ROOT / "memory" / "records").glob("*.json")))
-germ_count = len(list((ROOT / "runtime" / "germ").glob("*.json")))
+evidence_count = count(ROOT / "evidence")
+hypothesis_count = count(ROOT / "hypothesis")
+dna_count = count(ROOT / "dna")
+memory_count = count(ROOT / "memory" / "records")
+experience_count = count(ROOT / "experience" / "records")
+knowledge_count = count(ROOT / "knowledge" / "records")
+germ_count = count(ROOT / "runtime" / "germ")
 
 phenotype_src = ROOT / "runtime" / "phenotype" / "phyt-001-current.svg"
 phenotype_dst = PUB / "phyt-001-current.svg"
 if phenotype_src.exists():
     phenotype_dst.write_text(phenotype_src.read_text())
 
+activity = []
+for organ in ["observer", "discovery", "memory"]:
+    jdir = ROOT / organ / "journal"
+    if jdir.exists():
+        for f in sorted(jdir.glob("*.json"))[-5:]:
+            activity.append({
+                "ts": f.stat().st_mtime,
+                "text": f"{organ.capitalize()} metabolism"
+            })
+
+activity = sorted(activity, key=lambda x: x["ts"], reverse=True)[:3]
+activity_html = "".join(
+    f"<div class='event compact'><span class='event-icon'>{icon_for(a['text'])}</span><span>{a['text']}</span></div>"
+    for a in activity
+)
+
+life_items = []
+life_dir = ROOT / "life" / "events"
+if life_dir.exists():
+    events = []
+    for f in life_dir.glob("*.json"):
+        d = load(f, {})
+        events.append((d.get("timestamp", ""), d.get("title", f.stem)))
+    for ts, title in sorted(events, reverse=True)[:5]:
+        life_items.append(f"<div class='life-event'><span></span><div><b>{title}</b><small>{ts}</small></div></div>")
+life_html = "".join(life_items)
+
 now = datetime.now().astimezone().isoformat()
 
-def status_dot(status):
-    return "🟢" if status == "ALIVE" else "🟡"
-
 html = f"""<!doctype html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PHYT-001 Observatory</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
 :root {{
-  --bg:#050b08;
-  --panel:#0a1811;
-  --panel2:#0d2117;
-  --green:#39d98a;
+  --bg:#020705;
+  --panel:#06130d;
+  --panel2:#0a1d14;
+  --green:#37f28b;
   --cyan:#55f0c2;
-  --text:#e8fff4;
-  --muted:#8bb89e;
-  --warn:#ffcc66;
+  --text:#eafff3;
+  --muted:#9ac7ae;
+  --border:rgba(55,242,139,.22);
 }}
 * {{ box-sizing:border-box; }}
-body {{
+html, body {{
   margin:0;
-  min-height:100vh;
+  width:100%;
+  height:100%;
+  overflow:hidden;
   background:
-    radial-gradient(circle at 50% 10%, rgba(57,217,138,.20), transparent 30%),
-    radial-gradient(circle at 80% 80%, rgba(85,240,194,.08), transparent 30%),
+    radial-gradient(circle at 50% 0%, rgba(55,242,139,.16), transparent 28%),
+    radial-gradient(circle at 100% 100%, rgba(85,240,194,.08), transparent 30%),
     var(--bg);
   color:var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}}
+.page {{
+  height:100vh;
+  padding:1.1vh 1.2vw;
+  display:grid;
+  grid-template-rows:10vh 1fr 4.5vh;
+  gap:1vh;
 }}
 .header {{
-  padding:28px 32px 12px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1vh 1.6vw;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  background:rgba(6,19,13,.78);
+  box-shadow:0 0 30px rgba(55,242,139,.08);
 }}
-.brand h1 {{
+.brand {{
+  display:flex;
+  align-items:center;
+  gap:1vw;
+}}
+.logo {{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:34px;
+  background:rgba(55,242,139,.10);
+}}
+h1 {{
   margin:0;
-  font-size:42px;
-  letter-spacing:.04em;
-}}
-.brand p {{ margin:6px 0 0; color:var(--muted); }}
-.badge {{
-  border:1px solid rgba(57,217,138,.45);
   color:var(--green);
-  padding:10px 14px;
-  border-radius:999px;
-  background:rgba(57,217,138,.08);
-  box-shadow:0 0 24px rgba(57,217,138,.18);
+  font-size:clamp(30px, 2.5vw, 46px);
+  line-height:1;
+}}
+.subtitle {{
+  margin-top:.4vh;
+  font-size:clamp(15px,1.2vw,22px);
+  font-weight:700;
+}}
+.badge {{
+  text-align:right;
+  color:var(--green);
+  font-weight:800;
+  font-size:clamp(15px,1.1vw,22px);
+}}
+.badge small {{
+  display:block;
+  color:var(--muted);
+  margin-top:.5vh;
+  font-weight:500;
 }}
 .grid {{
+  min-height:0;
   display:grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap:22px;
-  padding:22px 32px 32px;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:1.2vw;
 }}
 .card {{
-  background:linear-gradient(180deg, rgba(13,33,23,.95), rgba(5,11,8,.9));
-  border:1px solid rgba(85,240,194,.18);
-  border-radius:26px;
-  padding:22px;
-  box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 0 28px rgba(57,217,138,.04);
+  min-height:0;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:2vh 1.5vw;
+  background:linear-gradient(180deg, rgba(10,29,20,.88), rgba(2,7,5,.72));
+  box-shadow:inset 0 0 28px rgba(55,242,139,.035);
 }}
-.phenotype {{
+h2 {{
+  margin:0 0 1.6vh;
+  color:var(--green);
+  font-size:clamp(19px,1.45vw,28px);
+}}
+
+@keyframes phytPulse {{
+  0% {{ filter:drop-shadow(0 0 18px rgba(55,242,139,.18)); }}
+  50% {{ filter:drop-shadow(0 0 55px rgba(55,242,139,.75)); }}
+  100% {{ filter:drop-shadow(0 0 18px rgba(55,242,139,.18)); }}
+}}
+.phenotype img {{
+  width:100%;
+  height:calc(100% - 4vh);
+  object-fit:contain;
+  animation:phytPulse 4s ease-in-out infinite;
+}}
+.identity {{
+  font-size:clamp(14px,1.1vw,21px);
+  line-height:1.35;
+  margin-bottom:2vh;
+}}
+.organ {{
+  height:5.8vh;
+  min-height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1.2vh;
+  padding:0 1.2vw;
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.06);
+  font-size:clamp(15px,1.05vw,20px);
+}}
+.organ span:first-child {{
+  display:flex;
+  align-items:center;
+  gap:.7vw;
+}}
+.dot {{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 16px rgba(55,242,139,.7);
+}}
+.metrics {{
+  height:calc(100% - 5vh);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5vw;
+}}
+.metric {{
+  display:grid;
+  place-items:center;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+}}
+.metric b {{
+  display:block;
+  color:var(--green);
+  font-size:clamp(28px,2.6vw,48px);
+}}
+.metric span {{
+  font-size:clamp(13px,1vw,18px);
+}}
+.event {{
+  min-height:6.2vh;
+  display:flex;
+  align-items:center;
+  gap:1vw;
+  padding:0 1vw;
+  margin-bottom:1.3vh;
+  border-left:4px solid var(--green);
+  border-radius:8px;
+  background:rgba(255,255,255,.045);
+  font-size:clamp(15px,1.05vw,20px);
+}}
+.event-icon {{
+  font-size:clamp(22px,1.9vw,32px);
+}}
+.life-event {{
+  position:relative;
+  display:flex;
+  gap:1vw;
+  margin-bottom:1.15vh;
+  font-size:clamp(14px,1vw,19px);
+}}
+.life-event span {{
+  flex:0 0 14px;
+  width:14px;
+  height:14px;
+  margin-top:.45vh;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 15px rgba(55,242,139,.7);
+}}
+.life-event small {{
+  display:block;
+  color:var(--muted);
+  margin-top:.25vh;
+}}
+.habitat-row {{
+  display:flex;
+  gap:1vw;
+  align-items:center;
+  margin-bottom:1.7vh;
+  font-size:clamp(15px,1.05vw,20px);
+}}
+.habitat-icon {{
+  width:38px;
+  text-align:center;
+  color:var(--green);
+  font-size:clamp(24px,2vw,34px);
+}}
+.habitat-row small {{
+  display:block;
+  color:var(--muted);
+}}
+.footer {{
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:520px;
-}}
-.phenotype img {{
-  width:min(430px, 90%);
-  filter: drop-shadow(0 0 30px rgba(57,217,138,.35));
-  animation:pulse 5s ease-in-out infinite;
-}}
-@keyframes pulse {{
-  0%,100% {{ transform:scale(1); opacity:.95; }}
-  50% {{ transform:scale(1.025); opacity:1; }}
-}}
-.kv {{
-  display:grid;
-  grid-template-columns: 150px 1fr;
-  gap:10px 16px;
-  font-size:16px;
-}}
-.kv div:nth-child(odd) {{ color:var(--muted); }}
-.organs {{
-  display:grid;
-  gap:12px;
-}}
-.organ {{
-  display:flex;
-  justify-content:space-between;
-  padding:14px 16px;
-  border-radius:16px;
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.06);
-}}
-.metrics {{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}}
-.metric {{
-  padding:18px;
-  border-radius:18px;
-  background:rgba(57,217,138,.06);
-  border:1px solid rgba(57,217,138,.15);
-}}
-.metric strong {{
-  display:block;
-  font-size:34px;
-  color:var(--cyan);
-}}
-.metric span {{ color:var(--muted); }}
-.footer {{
-  padding:0 32px 28px;
   color:var(--muted);
-  font-size:13px;
+  border:1px solid rgba(55,242,139,.12);
+  border-radius:12px;
+  background:rgba(6,19,13,.5);
+  font-size:clamp(12px,.9vw,16px);
 }}
-h2 {{ margin-top:0; color:var(--green); }}
-@media(max-width:900px) {{
-  .grid {{ grid-template-columns:1fr; }}
+@media(max-width:1100px) {{
+  .grid {{ gap:10px; }}
+  .card {{ padding:14px; }}
 }}
 </style>
 </head>
 <body>
+<div class="page">
   <div class="header">
     <div class="brand">
-      <h1>🌱 PHYT-001</h1>
-      <p>PHYTCOI Observatory · read-only organism window</p>
+      <div class="logo">🌱</div>
+      <div>
+        <h1>PHYT-001</h1>
+        <div class="subtitle">PHYTCOI Observatory</div>
+      </div>
     </div>
-    <div class="badge">ALIVE · OBSERVE</div>
+    <div class="badge">ALIVE · OBSERVE 🟢<small>{now}</small></div>
   </div>
 
   <div class="grid">
     <div class="card phenotype">
-      <img src="phyt-001-current.svg" alt="PHYT-001 phenotype">
+      <h2>Phenotype</h2>
+      <img src="phyt-001-current.svg">
     </div>
 
     <div class="card">
       <h2>Live State</h2>
-      <div class="kv">
-        <div>Species</div><div>{identity.get("species","PHYTCOI")}</div>
-        <div>Individual</div><div>{identity.get("individual","PHYT-001")}</div>
-        <div>Nest</div><div>{identity.get("nest","NEST-ALPHA")}</div>
-        <div>Lifecycle</div><div>{identity.get("lifecycle","OBSERVE")}</div>
-        <div>Status</div><div>{identity.get("status","ALIVE")}</div>
-        <div>Last render</div><div>{now}</div>
+      <div class="identity">
+        <div>Species: {identity.get('species','PHYTCOI')}</div>
+        <div>Individual: {identity.get('individual','PHYT-001')}</div>
+        <div>Nest: {identity.get('nest','NEST-ALPHA')}</div>
       </div>
+      <div class="organ"><span><i class="dot"></i>Observer</span><b>{observer.get('run_count',0)}</b></div>
+      <div class="organ"><span>🌿 Discovery</span><b>{discovery.get('run_count',0)}</b></div>
+      <div class="organ"><span>🧠 Memory</span><b>{memory.get('run_count',0)}</b></div>
+    </div>
 
-      <h2 style="margin-top:26px">Organs</h2>
-      <div class="organs">
-        <div class="organ"><span>{status_dot(observer.get("status"))} Observer</span><span>runs {observer.get("run_count",0)}</span></div>
-        <div class="organ"><span>{status_dot(discovery.get("status"))} Discovery</span><span>runs {discovery.get("run_count",0)}</span></div>
-        <div class="organ"><span>{status_dot(memory.get("status"))} Memory</span><span>runs {memory.get("run_count",0)}</span></div>
+    <div class="card">
+      <h2>Cognition</h2>
+      <div class="metrics">
+        <div class="metric"><div><b>{experience_count}</b><span>Experience</span></div></div>
+        <div class="metric"><div><b>{knowledge_count}</b><span>Knowledge</span></div></div>
+        <div class="metric"><div><b>{knowledge.get('confidence','-').upper()}</b><span>Confidence</span></div></div>
+        <div class="metric"><div><b>{knowledge.get('run_count',0)}</b><span>Know Runs</span></div></div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Knowledge</h2>
-      <div class="metrics">
-        <div class="metric"><strong>{evidence_count}</strong><span>Evidence</span></div>
-        <div class="metric"><strong>{hypothesis_count}</strong><span>Hypotheses</span></div>
-        <div class="metric"><strong>{dna_count}</strong><span>DNA Records</span></div>
-        <div class="metric"><strong>{memory_count}</strong><span>Memory Records</span></div>
-      </div>
+      <h2>Recent Activity</h2>
+      {activity_html}
+    </div>
+
+    <div class="card">
+      <h2>Life Timeline</h2>
+      {life_html}
     </div>
 
     <div class="card">
       <h2>Habitat Understanding</h2>
-      <div class="kv">
-        <div>Network Provider</div><div>1 candidate</div>
-        <div>Resolution Providers</div><div>2 candidates</div>
-        <div>Germ Structures</div><div>{germ_count}</div>
-        <div>Execution</div><div>disabled</div>
-        <div>Habitat Modification</div><div>forbidden</div>
-      </div>
+      <div class="habitat-row"><div class="habitat-icon">◎</div><div>Network Provider<small>1 candidate</small></div></div>
+      <div class="habitat-row"><div class="habitat-icon">▣</div><div>Resolution Providers<small>2 candidates</small></div></div>
+      <div class="habitat-row"><div class="habitat-icon">✹</div><div>Germ Structures<small>{germ_count}</small></div></div>
+      <div class="habitat-row"><div class="habitat-icon">▶</div><div>Execution<small>disabled</small></div></div>
+      <div class="habitat-row"><div class="habitat-icon">🔒</div><div>Habitat Modification<small>forbidden</small></div></div>
     </div>
   </div>
 
-  <div class="footer">
-    Generated by PHYTCOI Observatory v1 · source of truth: /opt/phytcoi JSON state · no decisions · no execution
-  </div>
+  <div class="footer">Generated from PHYTCOI state · {now}</div>
+</div>
 </body>
 </html>
 """
 
+PUB.mkdir(parents=True, exist_ok=True)
 (PUB / "index.html").write_text(html)
 
 state = load(STATE, {})
 state["last_render"] = now
 state["render_count"] = state.get("render_count", 0) + 1
+state["ui_version"] = "observatory_v3_cognition"
 STATE.write_text(json.dumps(state, indent=2) + "\n")

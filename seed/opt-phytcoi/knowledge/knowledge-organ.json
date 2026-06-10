@@ -1,0 +1,35 @@
+{
+  "organ_id": "knowledge",
+  "species": "PHYTCOI",
+  "version": 1,
+  "status": "ALIVE",
+  "lifecycle": "OBSERVE",
+  "purpose": "promote repeated coherent experience into persistent knowledge",
+  "inputs": [
+    "experience_records",
+    "experience_state"
+  ],
+  "outputs": [
+    "knowledge_records",
+    "knowledge_journal"
+  ],
+  "allowed_actions": [
+    "read_experience",
+    "detect_repetition",
+    "derive_knowledge",
+    "persist_knowledge"
+  ],
+  "forbidden_actions": [
+    "modify_habitat",
+    "execute",
+    "decide",
+    "authorize",
+    "change_lifecycle"
+  ],
+  "principles": [
+    "knowledge_from_repeated_experience",
+    "no_action",
+    "no_decision",
+    "observe_only"
+  ]
+}

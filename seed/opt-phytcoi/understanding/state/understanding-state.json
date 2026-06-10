@@ -1,10 +1,12 @@
 {
-  "organ": "memory",
+  "organ": "understanding",
   "species": "PHYTCOI",
   "status": "ALIVE",
   "lifecycle": "OBSERVE",
   "birth_timestamp": null,
   "last_run": null,
   "run_count": 0,
-  "memory_records_count": 0
+  "understanding_records_count": 0,
+  "last_understanding_type": null,
+  "confidence": null
 }
