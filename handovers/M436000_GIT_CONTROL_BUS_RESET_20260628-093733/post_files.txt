@@ -1,6 +1,0 @@
-/opt/phytcoi/core/bridge/mother-intent-writer.py
-/opt/phytcoi/core/bridge/nest-control-poller.py
-/opt/phytcoi/governance/policies/control-bus-policy-v1.json
-/opt/phytcoi/governance/schemas/intent-schema-v1.json
-/opt/phytcoi/governance/schemas/plan-schema-v1.json
-/opt/phytcoi/README.md

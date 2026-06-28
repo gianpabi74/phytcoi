@@ -1,8 +1,0 @@
-./ai/.gitkeep
-./core/.gitkeep
-./events/.gitkeep
-./governance/.gitkeep
-./handovers/M436000_GIT_CONTROL_BUS_RESET_20260628-093733/pre_audit.txt
-./handovers/M436000_GIT_CONTROL_BUS_RESET_20260628-093733/pre_files.txt
-./ledger/.gitkeep
-./patches/.gitkeep

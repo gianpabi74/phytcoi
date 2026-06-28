@@ -1,0 +1,51 @@
+# PHYTCOI local/runtime exclusions
+handovers/
+backups/
+audit_backups/
+archive/
+archives/
+retired/
+venv/
+venvs/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.tar.gz
+*.zip
+*.log
+*.tmp
+.cache/
+.pytest_cache/
+
+# secrets / credentials / volatile runtime
+.env
+*.env
+*.secret
+*.secrets
+*.key
+*.pem
+*.crt
+*credential*
+*credentials*
+*password*
+*passwd*
+*token*
+*apikey*
+*api_key*
+*vault*
+vault/
+secrets/
+
+# databases / live stores
+*.db
+*.sqlite
+*.sqlite3
+*.journal
+*.wal
+*.shm
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
