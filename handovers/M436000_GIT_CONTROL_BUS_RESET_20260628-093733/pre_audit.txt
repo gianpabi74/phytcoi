@@ -1,0 +1,5 @@
+===== PRE AUDIT =====
+origin	git@github.com:gianpabi74/phytcoi.git (fetch)
+origin	git@github.com:gianpabi74/phytcoi.git (push)
+* main
+?? handovers/

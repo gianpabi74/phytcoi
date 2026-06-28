@@ -1,0 +1,11 @@
+{
+  "intent_id": "intent_20260628T073733Z",
+  "created_at": "2026-06-28T07:37:33.213491+00:00",
+  "source": "mother",
+  "human_command": "verify what we did today and report safe remediations",
+  "mode": "audit_then_patch",
+  "mutation_allowed": false,
+  "requires_backup": true,
+  "requires_verification": true,
+  "status": "new"
+}

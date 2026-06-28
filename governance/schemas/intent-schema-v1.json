@@ -1,0 +1,20 @@
+{
+  "schema_id": "intent-schema-v1",
+  "required_fields": [
+    "intent_id",
+    "created_at",
+    "source",
+    "human_command",
+    "mode",
+    "mutation_allowed",
+    "requires_backup",
+    "requires_verification",
+    "status"
+  ],
+  "allowed_modes": [
+    "audit_only",
+    "audit_then_patch",
+    "nightly_review",
+    "safe_remediation"
+  ]
+}

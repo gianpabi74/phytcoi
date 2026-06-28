@@ -1,0 +1,10 @@
+{
+  "result_id": "result_intent_20260628T073733Z",
+  "intent_id": "intent_20260628T073733Z",
+  "created_at": "2026-06-28T07:37:33.236410+00:00",
+  "executor": "nest-control-poller",
+  "mode": "dry_run",
+  "status": "observed",
+  "message": "Intent received. Runtime mutation is disabled in phase 1.",
+  "human_command": "verify what we did today and report safe remediations"
+}

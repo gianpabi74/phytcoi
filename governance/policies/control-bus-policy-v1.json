@@ -1,0 +1,30 @@
+{
+  "policy_id": "control-bus-policy-v1",
+  "purpose": "Define Git as the asynchronous control bus between MOTHER, ChatGPT, and NEST.",
+  "runtime_truth": "NEST",
+  "git_role": "control_bus",
+  "git_must_not_contain": [
+    "runtime_state",
+    "secrets",
+    "venv",
+    "cache",
+    "logs",
+    "backups",
+    "snapshots",
+    "live_databases",
+    "complete_nest_runtime_copy"
+  ],
+  "git_may_contain": [
+    "intents",
+    "evidence",
+    "plans",
+    "patches",
+    "results",
+    "decisions",
+    "schemas",
+    "policies"
+  ],
+  "mutation_rule": "NEST is the only component allowed to mutate the runtime filesystem after validation.",
+  "chatgpt_rule": "ChatGPT may produce plans and patches but must not directly mutate NEST.",
+  "mother_rule": "MOTHER emits human intent as structured events."
+}

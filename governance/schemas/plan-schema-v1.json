@@ -1,0 +1,18 @@
+{
+  "schema_id": "plan-schema-v1",
+  "required_fields": [
+    "plan_id",
+    "intent_id",
+    "created_at",
+    "risk_level",
+    "actions",
+    "verification",
+    "rollback"
+  ],
+  "allowed_risk_levels": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "execution_rule": "Only low-risk plans may be applied automatically by NEST in the first implementation phase."
+}
